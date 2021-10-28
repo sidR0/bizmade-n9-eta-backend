@@ -6,6 +6,10 @@ import axios from "axios";
 import products from "../products";
 import ProductCarousel from "../components/ProductCarousel";
 
+
+import { useDispatch, useSelector } from 'react-redux'
+import { listDataCreator } from '../actions/combinedActions.js'
+
 function HomeScreen() {
   // const [products, setProducts] = useState([]);
 
@@ -16,6 +20,19 @@ function HomeScreen() {
   //   };
   //   fetchedProducts();
   // }, []);
+
+  const dispatch = useDispatch()
+
+  const productList = useSelector((state) => state.productList)
+  const { loading, error, products } = productList
+
+  const userList = useSelector((state) => state.userList)
+
+  useEffect(() => {
+    dispatch(listDataCreator('products')())
+    dispatch(listDataCreator('users')())
+  }, [dispatch])
+
   return (
     <>
       <ProductCarousel />
@@ -36,11 +53,19 @@ function HomeScreen() {
             </div>
           </div>
         </Col>
-        {products.map((product) => (
-          <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-            <Product product={product} />
-          </Col>
-        ))}
+        {loading ? (
+          <h2>Loading...</h2>
+        ) : error ? (
+          <h3>{error}</h3>
+        ) : (
+          <Row>
+            {products.map((product) => (
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Product product={product} />
+              </Col>
+            ))}
+          </Row>
+        )}
       </Row>
     </>
   );
