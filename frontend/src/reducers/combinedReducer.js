@@ -4,16 +4,12 @@ const apiEnum = {
 };
 
 
-const initialState = {
-    products: [],
-    users: []
-};
 
 // const apiType = apiEnum.products;
 
 
 export const createDataReducer = (apiType) => (
-    (state = initialState, { type, payload }) => {
+    (state = { [apiType]: [] }, { type, payload }) => {
         switch (type) {
             case `${apiType}_list_request`:
                 return { ...state, loading: true, [apiType]: [] }

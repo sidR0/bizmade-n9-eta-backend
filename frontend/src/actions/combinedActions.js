@@ -1,24 +1,24 @@
 import axios from 'axios'
 
-export const listDataCreator = (apiType) => (
+export const listDataCreator = (apiType, actionPrefix) => (
 
     () => async (dispatch) => {
 
         try {
 
-            dispatch({ type: `${apiType}_list_request` })
-            console.log(apiType);
-            const { data } = await axios.get(`/api/${apiType}`)
+            dispatch({ type: `${actionPrefix}_list_request` })
+
+            const { data } = await axios.get(`${apiType}`)
 
             dispatch({
-                type: `${apiType}_list_success`,
+                type: `${actionPrefix}_list_success`,
                 payload: data,
             })
 
         } catch (error) {
 
             dispatch({
-                type: `${apiType}_list_fail`,
+                type: `${actionPrefix}_list_fail`,
                 payload:
                     error.response && error.response.data.message
                         ? error.response.data.message

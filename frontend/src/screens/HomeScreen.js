@@ -6,11 +6,14 @@ import axios from "axios";
 import products from "../products";
 import ProductCarousel from "../components/ProductCarousel";
 
-
 import { useDispatch, useSelector } from 'react-redux'
 import { listDataCreator } from '../actions/combinedActions.js'
 
+import { listProducts } from '../actions/productActions'
+import { listUsers } from '../actions/userActions'
+
 function HomeScreen() {
+
   // const [products, setProducts] = useState([]);
 
   // useEffect(() => {
@@ -21,16 +24,25 @@ function HomeScreen() {
   //   fetchedProducts();
   // }, []);
 
+  // const products = []
+  // const loading = true
+  // const error = null
+
   const dispatch = useDispatch()
 
-  const productList = useSelector((state) => state.productList)
-  const { loading, error, products } = productList
+  const productList = useSelector((state) => { return state.productList })
+  const { loading, products, error } = productList
 
   const userList = useSelector((state) => state.userList)
 
+  // useEffect(() => {
+  //   dispatch(listDataCreator('api/products', 'products')())
+  //   dispatch(listDataCreator('api/users', 'users')())
+  // }, [dispatch])
+
   useEffect(() => {
-    dispatch(listDataCreator('products')())
-    dispatch(listDataCreator('users')())
+    dispatch(listProducts())
+    dispatch(listUsers())
   }, [dispatch])
 
   return (
