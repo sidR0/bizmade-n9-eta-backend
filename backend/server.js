@@ -1,7 +1,8 @@
-const express = require("express");
-const connectDB = require("./config/db.js");
-const dotenv = require("dotenv");
-const products = require("./data/products");
+import express from "express";
+import connectDB from "./config/db.js";
+import dotenv from "dotenv";
+import productRoutes from './routes/productRoutes.js'
+import orderRoutes from './routes/orderRoutes.js'
 
 dotenv.config();
 
@@ -9,18 +10,11 @@ connectDB();
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
+app.use(express.json())
 
-app.get("/api/products", (req, res) => {
-  res.json(products);
-});
+app.use('/api/products', productRoutes)
 
-app.get("/api/products/:id", (req, res) => {
-  const product = products.find((p) => p._id === req.params.id);
-  res.json(product);
-});
+app.use('/api/orders', orderRoutes)
 
 const PORT = process.env.PORT;
 

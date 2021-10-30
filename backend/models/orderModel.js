@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const orderSchema = mongoose.Schema(
   {
@@ -17,6 +17,11 @@ const orderSchema = mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           required: true,
           ref: "Product",
+        },
+	      status: {
+          type: String,
+          enum : ['Paid','Processing','Shipped','Delivered','Not Paid'],
+          default: 'Not Paid'
         },
       },
     ],
@@ -50,21 +55,15 @@ const orderSchema = mongoose.Schema(
       required: true,
       default: 0.0,
     },
+    discount: {
+      type: Number,
+      default: 0.0,
+    },
     totalPrice: {
       type: Number,
       required: true,
       default: 0.0,
-    },
-    isPaid: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-    isDelivered: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
+    }
   },
   {
     timestamps: true,
@@ -73,4 +72,4 @@ const orderSchema = mongoose.Schema(
 
 const Order = mongoose.model("Order", orderSchema);
 
-module.exports = Order;
+export default Order;
