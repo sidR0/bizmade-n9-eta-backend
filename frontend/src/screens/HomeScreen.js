@@ -6,14 +6,13 @@ import axios from "axios";
 import products from "../products";
 import ProductCarousel from "../components/ProductCarousel";
 
-import { useDispatch, useSelector } from 'react-redux'
-import { listDataCreator } from '../actions/combinedActions.js'
+import { useDispatch, useSelector } from "react-redux";
+import { listDataCreator } from "../actions/combinedActions.js";
 
-import { listProducts } from '../actions/productActions'
-import { listUsers } from '../actions/userActions'
+import { listProducts } from "../actions/productActions";
+import { listUsers } from "../actions/userActions";
 
 function HomeScreen() {
-
   // const [products, setProducts] = useState([]);
 
   // useEffect(() => {
@@ -28,12 +27,14 @@ function HomeScreen() {
   // const loading = true
   // const error = null
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const productList = useSelector((state) => { return state.productList })
-  const { loading, products, error } = productList
+  const productList = useSelector((state) => {
+    return state.productList;
+  });
+  const { loading, products, error } = productList;
 
-  const userList = useSelector((state) => state.userList)
+  const userList = useSelector((state) => state.userList);
 
   // useEffect(() => {
   //   dispatch(listDataCreator('api/products', 'products')())
@@ -41,9 +42,9 @@ function HomeScreen() {
   // }, [dispatch])
 
   useEffect(() => {
-    dispatch(listProducts())
-    dispatch(listUsers())
-  }, [dispatch])
+    dispatch(listProducts());
+    dispatch(listUsers());
+  }, [dispatch]);
 
   return (
     <>
@@ -66,9 +67,13 @@ function HomeScreen() {
           </div>
         </Col>
         {loading ? (
-          <h2>Loading...</h2>
+          <Col className="col-10">
+            <h2>Loading...</h2>
+          </Col>
         ) : error ? (
-          <h3>{error}</h3>
+          <Col className="col-10">
+            <h3>{error}</h3>
+          </Col>
         ) : (
           <Row>
             {products.map((product) => (
