@@ -30,8 +30,10 @@ function HomeScreen() {
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => {
+    console.log(JSON.stringify(state));
     return state.productList;
   });
+
   const { loading, products, error } = productList;
 
   const userList = useSelector((state) => state.userList);
@@ -75,6 +77,8 @@ function HomeScreen() {
             <h3>{error}</h3>
           </Col>
         ) : (
+          //can give error boundary here becuase product_list_fail is called after 'product is not defined' error is thrown (when case:PRODUCT_LIST_SUCCESS is returning wrong values),
+          //so product is assigned with empty array after that when code in product reducer case:PRODUCT_LIST_FAIL is runs
           <Row>
             {products.map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>

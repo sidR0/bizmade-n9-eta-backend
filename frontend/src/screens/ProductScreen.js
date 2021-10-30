@@ -1,12 +1,30 @@
 import React from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react'
 import { Row, Col, Image, Container, ListGroup, Card } from "react-bootstrap";
 import Heart from "./images/heart.png";
 import "../styles.css";
 import products from "../products";
 import { Link } from "react-router-dom";
 
+import {
+  listProductDetails
+} from '../actions/productActions';
+
 const ProductScreen = ({ match }) => {
-  const product = products.find((p) => p._id === match.params.id);
+  //const product = products.find((p) => p._id === match.params.id);
+  const dispatch = useDispatch()
+
+  const productDetails = useSelector((state) => state.productDetails);
+  const { loading, error, product } = productDetails;
+
+  useEffect(() => {
+
+    if (!product._id || product._id !== match.params.id) {
+      dispatch(listProductDetails(match.params.id))
+    }
+  }, [dispatch, match])
+
   return (
     <Container className="pt-5">
       <Row>
