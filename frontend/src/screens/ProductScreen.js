@@ -1,29 +1,31 @@
 import React from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import { Row, Col, Image, Container, ListGroup, Card } from "react-bootstrap";
 import Heart from "./images/heart.png";
 import "../styles.css";
 import products from "../products";
 import { Link } from "react-router-dom";
 
-import {
-  listProductDetails
-} from '../actions/productActions';
+import { listProductDetails } from "../actions/productActions";
 
-const ProductScreen = ({ match }) => {
+const ProductScreen = ({ match, history }) => {
+  const [qty, setQty] = useState(1);
   //const product = products.find((p) => p._id === match.params.id);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
   useEffect(() => {
-
     if (!product._id || product._id !== match.params.id) {
-      dispatch(listProductDetails(match.params.id))
+      dispatch(listProductDetails(match.params.id));
     }
-  }, [dispatch, match])
+  }, [dispatch, match]);
+
+  const addToCartHandler = () => {
+    history.push(`/cart/${match.params.id}?qty=${qty}`);
+  };
 
   return (
     <Container className="pt-5">
@@ -88,9 +90,24 @@ const ProductScreen = ({ match }) => {
               <tr className="table-border">
                 <td colspan="4">
                   <span className="grey font-weight-bold">Quantity :</span>
-                  <button className="m-2">-</button>
-                  <span>1</span>
-                  <button className="m-2">+</button>
+                  <button
+                    className="m-2"
+                    onClick={() => {
+                      setQty(qty - 1);
+                    }}
+                    disabled={qty === 1}
+                  >
+                    -
+                  </button>
+                  <span>{qty}</span>
+                  <button
+                    className="m-2"
+                    onClick={() => {
+                      setQty(qty + 1);
+                    }}
+                  >
+                    +
+                  </button>
                 </td>
               </tr>
               <tr>
