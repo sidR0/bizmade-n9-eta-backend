@@ -11,11 +11,14 @@ import { listProductDetails } from "../actions/productActions";
 
 const ProductScreen = ({ match, history }) => {
   const [qty, setQty] = useState(1);
-  //const product = products.find((p) => p._id === match.params.id);
+  const [gst, setGst] = useState(0);
   const dispatch = useDispatch();
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   useEffect(() => {
     if (!product._id || product._id !== match.params.id) {
@@ -57,7 +60,7 @@ const ProductScreen = ({ match, history }) => {
             <thead className="bg-blue white">
               <tr>
                 <th scope="col">Price</th>
-                <th scope="col">{product.price}</th>
+                <th scope="col">{product.price * qty}</th>
               </tr>
             </thead>
             <tbody className="bg-lightblue">
@@ -65,7 +68,7 @@ const ProductScreen = ({ match, history }) => {
                 <th scope="row" className="grey">
                   GST
                 </th>
-                <td>10,650</td>
+                <td>{0.18 * product.price}</td>
               </tr>
               <tr>
                 <th scope="row" className="grey">

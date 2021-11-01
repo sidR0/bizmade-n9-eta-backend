@@ -31,7 +31,7 @@ function Header() {
             <Search />
             <Nav className="nav-links">
               {userInfo ? (
-                <div>
+                <div className="d-flex">
                   <LinkContainer to="/wishlist">
                     <Nav.Link>
                       <i className="far fa-heart"></i> Wishlist
@@ -46,7 +46,8 @@ function Header() {
                   <NavDropdown
                     title={
                       <span>
-                        <i className="far fa-user"></i>
+                        {/* <i className="far fa-user">{userInfo.name}</i> */}
+                        <h6 className="d-inline-block">{userInfo.name}</h6>
                       </span>
                     }
                     id="adminmenu"
