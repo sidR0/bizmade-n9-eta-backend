@@ -38,7 +38,7 @@ function App() {
               path="/manufacturer/orders"
               component={ManufacOrderHistory}
             />
-            <Route path="/editproduct" component={EditProduct} />
+            <Route path="/editproduct/:id" component={EditProduct} />
             <Route path="/addproduct" component={AddProduct} />
             <Route path="/profile" component={ProfilePage} />
             <Route path="/home" component={ManufacLandingPage} />

@@ -49,7 +49,7 @@ function HomeScreen() {
   useEffect(() => {
     dispatch(listProducts());
     dispatch(listUsers());
-  }, [dispatch, userInfo]);
+  }, [dispatch]);
 
   return (
     <>
@@ -63,7 +63,10 @@ function HomeScreen() {
             <h3>{error}</h3>
           </Col>
         ) : (
-          <ManufacLandingPage products={products} />
+          <ManufacLandingPage
+            products={products}
+            manufacturer={userInfo.name}
+          />
         )
       ) : (
         <>
