@@ -4,7 +4,7 @@ import HomeScreen from "./screens/HomeScreen";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import ProductScreen from "./screens/ProductScreen";
-import PaymentScreen from "./screens/PaymentScreen";
+import ShippingScreen from "./screens/ShippingScreen";
 import OrderConfirmation from "./screens/OrderConfirmation";
 import DealerOrderHistory from "./screens/DealerOrderHistory";
 import ManufacOrderHistory from "./screens/ManufacOrderHistory";
@@ -31,7 +31,7 @@ function App() {
             <Route path="/product/:id" component={ProductScreen} />
             <Route path="/cart" component={Cart} />
             <Route path="/wishlist" component={Wishlist} />
-            <Route path="/payment" component={PaymentScreen} />
+            <Route path="/shipping" component={ShippingScreen} />
             <Route path="/orderconfirmation" component={OrderConfirmation} />
             <Route path="/dealer/orders" component={DealerOrderHistory} />
             <Route

@@ -1,10 +1,21 @@
 import Button from "@restart/ui/esm/Button";
 import React from "react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "../styles.css";
 import { Container, Row, Col, Table, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const PaymentScreen = () => {
+const ShippingScreen = () => {
+  const cart = useSelector((state) => state.cart);
+  const { shippingAddress } = cart;
+  const [address, setAddress] = useState(shippingAddress.address);
+  const [city, setCity] = useState(shippingAddress.city);
+  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
+  const [country, setCountry] = useState(shippingAddress.country);
+
+  const dispatch = useDispatch();
+
   return (
     <div>
       <Container>
@@ -92,4 +103,4 @@ const PaymentScreen = () => {
   );
 };
 
-export default PaymentScreen;
+export default ShippingScreen;
