@@ -1,14 +1,64 @@
-import React from 'react';
-import '../styles.css';
-import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import React from "react";
+import "../styles.css";
+import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import products from "../products";
 
+const ManufacLandingPage = ({ products }) => {
+  return (
+    <div>
+      <Container>
+        {/* {loading ? (
+          <Col className="col-10">
+            <h2>Loading...</h2>
+          </Col>
+        ) : error ? (
+          <Col className="col-10">
+            <h3>{error}</h3>
+          </Col>
+        ) : ( */}
+        <Row>
+          <Col md={12} className="p-4">
+            <h2 className="float-start">Welcome Nike India</h2>
+            <Link to="/addproduct">
+              <Button className="float-end">ADD PRODUCT</Button>
+            </Link>
+          </Col>
+          {products.map((product) => (
+            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              <Card className="my-3 p-3 rounded">
+                <Link to={`/product/${product._id}`}>
+                  <Card.Img src={product.image} variant="top" />
+                </Link>
 
-const ManufacLandingPage = () => {
-    return (
-        <div>
-            <Container>
-                <Row>
-                    <Col md={12} className="p-4">
+                <Card.Body className="text-left">
+                  <Link to={`/product/${product._id}`}>
+                    <Card.Title as="div">
+                      <strong>{product.name}</strong>
+                    </Card.Title>
+                  </Link>
+
+                  <Card.Text
+                    style={{
+                      color: "#0fafe9",
+                      fontSize: "medium",
+                      fontWeight: "500",
+                    }}
+                    as="h3"
+                  >
+                    &#8377;{product.price}
+                  </Card.Text>
+                  <Link to="/editproduct">
+                    <Button className="bg-blue">EDIT</Button>
+                  </Link>
+                  <Button className="bg-blue">DELETE</Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+        {/* )} */}
+        {/* <Col md={12} className="p-4">
                         <h2 className="float-start">Welcome Nike India</h2>
                         <Button className="float-end">ADD PRODUCT</Button>
                     </Col>
@@ -44,10 +94,10 @@ const ManufacLandingPage = () => {
                             </Card.Body>
                         </Card>
                     </Col>
-                </Row>
-            </Container>
-        </div>
-    )
-}
+                </Row> */}
+      </Container>
+    </div>
+  );
+};
 
-export default ManufacLandingPage
+export default ManufacLandingPage;

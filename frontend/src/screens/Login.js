@@ -27,7 +27,6 @@ const Login = ({ location, history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
-    console.log(error);
   };
 
   return (

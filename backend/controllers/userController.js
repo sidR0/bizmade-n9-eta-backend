@@ -16,7 +16,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       phoneNumber: user.phoneNumber,
-      isAdmin: user.isAdmin,
+      isManufacturer: user.isManufacturer,
       token: generateToken(user._id),
     });
   } else {
@@ -98,7 +98,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
+      isManufacturer: updatedUser.isManufacturer,
       token: generateToken(updatedUser._id),
     });
   } else {
@@ -153,7 +153,7 @@ const updateUser = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
-    user.isAdmin = req.body.isAdmin;
+    user.isManufacturer = req.body.isManufacturer;
 
     const updatedUser = await user.save();
 
@@ -161,7 +161,7 @@ const updateUser = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
+      isManufacturer: updatedUser.isManufacturer,
     });
   } else {
     res.status(404);
