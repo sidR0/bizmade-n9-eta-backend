@@ -7,7 +7,7 @@ import { login } from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
-function Login() {
+const Login = ({ location, history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,18 +16,17 @@ function Login() {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
 
-  // const redirect = location.search ? location.search.split("=")[1] : "/";
+  const redirect = location.search ? location.search.split("=")[1] : "/";
 
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     history.push(redirect);
-  //   }
-  // }, [history, userInfo, redirect]);
+  useEffect(() => {
+    if (userInfo) {
+      history.push(redirect);
+    }
+  }, [history, userInfo, redirect]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
-    console.log(error);
   };
 
   return (
@@ -72,6 +71,6 @@ function Login() {
       </Row>
     </FormContainer>
   );
-}
+};
 
 export default Login;

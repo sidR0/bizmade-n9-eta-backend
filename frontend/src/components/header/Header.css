@@ -25,6 +25,10 @@ h1 {
   text-align: left;
 }
 
+h6 {
+  margin-top: 9px;
+}
+
 /* header {
   display: flex;
   justify-content: flex-end;
