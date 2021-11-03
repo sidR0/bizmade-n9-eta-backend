@@ -1,36 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "../styles.css";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import products from "../products";
+// import products from "../products";
+import { useDispatch, useSelector } from "react-redux";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import { listProducts, deleteProduct } from "../actions/productActions";
 
-const ManufacLandingPage = ({ products, manufacturer }) => {
-  const [inventory, setInventory] = useState(false);
+const ManufacLandingPage = ({ products, manufacturer, history }) => {
+  const dispatch = useDispatch();
+  const productList = useSelector((state) => state.productList);
+  const { loading, error, product } = productList;
+  const productDelete = useSelector((state) => state.productDelete);
 
-  // useEffect(() => {
-  //   products.map((product) => {
-  //     if (product.manufacturer === manufacturer) {
-  //       setInventory(true);
-  //     }
-  //   });
-  //   if (inventory) {
-  //     console.log(`Inventory : ${inventory}`);
-  //   } else {
-  //     return <h2>No products in your Inventory</h2>;
-  //   }
-  // });
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = productDelete;
+
+  useEffect(() => {
+    if (successDelete) {
+      window.location.reload();
+    }
+  }, [dispatch, successDelete]);
+
+  const deleteHandler = (id) => {
+    if (window.confirm("Are you sure you want to delete")) {
+      dispatch(deleteProduct(id));
+    }
+  };
   return (
     <div>
       <Container>
-        {/* {loading ? (
-          <Col className="col-10">
-            <h2>Loading...</h2>
-          </Col>
-        ) : error ? (
-          <Col className="col-10">
-            <h3>{error}</h3>
-          </Col>
-        ) : ( */}
+        {loadingDelete && <Loader />}
+        {errorDelete && <Message variant="danger">{errorDelete}</Message>}
         <Row>
           <Col md={12} className="p-4">
             <h2 className="float-start">{`Welcome ${manufacturer}`}</h2>
@@ -42,16 +47,12 @@ const ManufacLandingPage = ({ products, manufacturer }) => {
             product.manufacturer === manufacturer ? (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                 <Card className="my-3 p-3 rounded">
-                  <Link to={`/product/${product._id}`}>
-                    <Card.Img src={product.image} variant="top" />
-                  </Link>
+                  <Card.Img src={product.image} variant="top" />
 
                   <Card.Body className="text-left">
-                    <Link to={`/product/${product._id}`}>
-                      <Card.Title as="div">
-                        <strong>{product.name}</strong>
-                      </Card.Title>
-                    </Link>
+                    <Card.Title as="div">
+                      <strong>{product.name}</strong>
+                    </Card.Title>
 
                     <Card.Text
                       style={{
@@ -66,7 +67,12 @@ const ManufacLandingPage = ({ products, manufacturer }) => {
                     <Link to={`/editproduct/${product._id}`}>
                       <Button className="bg-blue">EDIT</Button>
                     </Link>
-                    <Button className="bg-blue">DELETE</Button>
+                    <Button
+                      className="bg-blue"
+                      onClick={() => deleteHandler(product._id)}
+                    >
+                      DELETE
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>
@@ -75,44 +81,6 @@ const ManufacLandingPage = ({ products, manufacturer }) => {
             )
           )}
         </Row>
-        {/* )} */}
-        {/* <Col md={12} className="p-4">
-                        <h2 className="float-start">Welcome Nike India</h2>
-                        <Button className="float-end">ADD PRODUCT</Button>
-                    </Col>
-                    <Col className="p-4">
-                        <Card style={{ width: '15rem' }} className="float-right pt-4 m-2 shadow">
-                            <Card.Img variant="top" src="" />
-                            <Card.Body>
-                                <Card.Title>iPhone 11</Card.Title>
-                                <Card.Text><p>Seller - Ajay Kumar</p>
-                                55,990
-                                </Card.Text>
-                                <Button className="bg-blue">EDIT</Button>
-                            </Card.Body>
-                        </Card>
-                        <Card style={{ width: '15rem' }} className="float-right pt-4 m-2 shadow">
-                            <Card.Img variant="top" src="" />
-                            <Card.Body>
-                                <Card.Title>iPhone 11</Card.Title>
-                                <Card.Text><p>Seller - Ajay Kumar</p>
-                                55,990
-                                </Card.Text>
-                                <Button className="bg-blue">EDIT</Button>
-                            </Card.Body>
-                        </Card>
-                        <Card style={{ width: '15rem' }} className="float-right pt-4 m-2 shadow">
-                            <Card.Img variant="top" src="" />
-                            <Card.Body>
-                                <Card.Title>iPhone 11</Card.Title>
-                                <Card.Text><p>Seller - Ajay Kumar</p>
-                                55,990
-                                </Card.Text>
-                                <Button className="bg-blue">EDIT</Button>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row> */}
       </Container>
     </div>
   );

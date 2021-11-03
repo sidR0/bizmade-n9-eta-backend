@@ -27,18 +27,29 @@ const getProductById = asyncHandler(async (req, res) => {
 // @route   POST /api/products
 // @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
+  const {
+    user,
+    name,
+    price,
+    description,
+    image,
+    manufacturer,
+    category,
+    countInStock,
+    minQuantity,
+    maxQuantity,
+  } = req.body;
   const product = new Product({
-    user: "617beac2ebca0edd2b2f7ed8",
-    name: "Amazon Echo Dot 3",
+    user,
+    name,
     image: "/images/alexa.jpg",
-    manufacturer: "Amazon",
-    category: "Electronics",
-    description:
-      "Meet Echo Dot 3 - Our most popular smart speaker with a fabric design. It is our most compact smart speaker that fits perfectly into small space",
-    price: 4999,
-    countInStock: 150,
-    minQuantity: 10,
-    maxQuantity: 20,
+    manufacturer,
+    category,
+    description,
+    price,
+    countInStock,
+    minQuantity,
+    maxQuantity,
   });
 
   const createdProduct = await product.save();
