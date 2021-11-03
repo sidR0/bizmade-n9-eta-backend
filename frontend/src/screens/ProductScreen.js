@@ -8,6 +8,7 @@ import products from "../products";
 import { Link } from "react-router-dom";
 
 import { listProductDetails } from "../actions/productActions";
+import { addProductsToWishlist } from "../actions/wishlistActions"
 
 const ProductScreen = ({ match, history }) => {
   const [qty, setQty] = useState(1);
@@ -20,15 +21,23 @@ const ProductScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const wishlistCreate = useSelector((state) => state.wishlistCreate);
+  const { wishlistItem } = wishlistCreate
+
   useEffect(() => {
     if (!product._id || product._id !== match.params.id) {
       dispatch(listProductDetails(match.params.id));
+      dispatch(addProductsToWishlist(match.params.id));
     }
-  }, [dispatch, match]);
+  }, [dispatch, match, product._id]);
 
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
   };
+
+  const addToWishlistHandler = () => {
+    dispatch(addProductsToWishlist(match.params.id));
+  }
 
   return (
     <Container className="pt-5">
@@ -42,6 +51,7 @@ const ProductScreen = ({ match, history }) => {
                 src={product.image}
                 width="auto"
                 height="600"
+                onClick={addToWishlistHandler}
                 fluid
               ></Image>
               <Image

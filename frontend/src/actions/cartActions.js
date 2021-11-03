@@ -1,8 +1,16 @@
 import axios from "axios";
 
 import {
-  CART_ADD_ITEM,
-  CART_REMOVE_ITEM,
+  CART_ADD_REQUEST,
+  CART_ADD_SUCCESS,
+  CART_ADD_FAIL,
+  CART_CLEAR_ITEMS,
+  CART_REMOVE_REQUEST,
+  CART_REMOVE_SUCCESS,
+  CART_REMOVE_FAIL,
+  CART_UPDATE_REQUEST,
+  CART_UPDATE_SUCCESS,
+  CART_UPDATE_FAIL,
   CART_SAVE_SHIPPING_ADDRESS,
   CART_SAVE_PAYMENT_METHOD,
 } from "../constants/cartConstants";
@@ -11,7 +19,7 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
   const { data } = await axios.get(`/api/products/${id}`);
 
   dispatch({
-    type: CART_ADD_ITEM,
+    type: CART_ADD_REQUEST,
     payload: {
       product: data._id,
       name: data.name,
@@ -27,7 +35,7 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
 
 export const removeFromCart = (id) => (dispatch, getState) => {
   dispatch({
-    type: CART_REMOVE_ITEM,
+    type: CART_REMOVE_REQUEST,
     payload: id,
   });
 
