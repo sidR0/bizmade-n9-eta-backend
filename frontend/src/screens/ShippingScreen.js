@@ -6,15 +6,26 @@ import "../styles.css";
 import { Container, Row, Col, Table, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const ShippingScreen = () => {
+import { Form } from "react-bootstrap";
+// import CheckoutSteps from '../components/CheckoutSteps'
+import { saveShippingAddress } from "../actions/cartActions";
+
+const ShippingScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
+
+  const [country, setCountry] = useState(shippingAddress.country);
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState(shippingAddress.city);
   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
-  const [country, setCountry] = useState(shippingAddress.country);
 
   const dispatch = useDispatch();
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(saveShippingAddress({ address, city, postalCode, country }));
+    history.push("/payment");
+  };
 
   return (
     <div>
@@ -24,22 +35,19 @@ const ShippingScreen = () => {
             <p className="fw-bold">Billing Address</p>
             <form>
               <input
-                className="firstname col-md-12 m-1"
-                placeholder="First Name"
-              ></input>
-              <input
-                className="lastname col-md-12 m-1"
-                placeholder="Last Name"
-              ></input>
-              <input
-                className="country col-md-12 m-1"
-                placeholder="Country"
-              ></input>
-              <input
                 className="streetaddress col-md-12 m-1"
                 placeholder="Street Address"
+                value={address}
+                required
+                onChange={(e) => setAddress(e.target.value)}
               ></input>
-              <input className="town col-md-12 m-1" placeholder="Town"></input>
+              <input
+                className="town col-md-12 m-1"
+                placeholder="Town"
+                value={city}
+                required
+                onChange={(e) => setCity(e.target.value)}
+              ></input>
               <input
                 className="state col-md-12 m-1"
                 placeholder="State"
@@ -47,16 +55,18 @@ const ShippingScreen = () => {
               <input
                 className="postalcode col-md-12 m-1"
                 placeholder="Postal Code"
+                value={postalCode}
+                required
+                onChange={(e) => setPostalCode(e.target.value)}
               ></input>
               <input
                 className="phone col-md-12 m-1"
                 placeholder="Phone"
               ></input>
-              <input
-                className="email col-md-12 m-1"
-                placeholder="Email Address"
-              ></input>
             </form>
+            <Button type="submit" variant="primary" onClick={submitHandler}>
+              Continue
+            </Button>
           </Col>
           <Col md={6}>
             <p className="fw-bold">Your Orders</p>

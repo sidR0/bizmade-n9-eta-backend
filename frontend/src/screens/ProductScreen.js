@@ -118,7 +118,7 @@ const ProductScreen = ({ match, history }) => {
                   <Link to="/cart">
                     <button className="m-2">Add to Cart</button>
                   </Link>
-                  <Link to="/payment">
+                  <Link to="/shipping">
                     <button className="m-2">Buy Now</button>
                   </Link>
                 </td>
