@@ -10,8 +10,34 @@ import {
   Button,
   Card,
 } from "react-bootstrap";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 
-function Cart() {
+function Cart({ match, location, history }) {
+  const productId = match.params.id;
+  const qty = location.search ? Number(location.search.split("=")[1]) : 1;
+
+  const dispatch = useDispatch();
+
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
+
+  useEffect(() => {
+    console.log("product id is " + productId + " and quantity is " + qty);
+    if (productId) {
+      dispatch(addToCart(productId, qty));
+    }
+  }, [dispatch, productId, qty]);
+
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id));
+  };
+
+  const checkoutHandler = () => {
+    //history.push('/login?redirect=shipping')
+  };
+
   return (
     <Row>
       <Col md={8}>
@@ -47,7 +73,11 @@ function Cart() {
                     </Form.Control>
                   </Col>
                   <Col md={2}>
-                    <Button type="button" variant="primary">
+                    <Button
+                      type="button"
+                      variant="primary"
+                      onClick={() => removeFromCartHandler(item.product)}
+                    >
                       {/* <i className="fas fa-trash"></i> */}
                       DELETE
                     </Button>

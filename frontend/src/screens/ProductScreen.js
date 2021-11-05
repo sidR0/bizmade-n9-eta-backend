@@ -27,7 +27,7 @@ const ProductScreen = ({ match, history }) => {
     if (!product._id || product._id !== match.params.id) {
       dispatch(listProductDetails(match.params.id));
     }
-    setQty(product.minQuantity);
+    setQty(() => product.minQuantity);
   }, [dispatch, match]);
 
   const addToCartHandler = () => {
@@ -125,9 +125,9 @@ const ProductScreen = ({ match, history }) => {
               </tr>
               <tr>
                 <td colspan="4">
-                  <Link to="/cart">
-                    <button className="m-2">Add to Cart</button>
-                  </Link>
+                  <button className="m-2" onClick={addToCartHandler}>
+                    Add to Cart
+                  </button>
                   <Link to="/shipping">
                     <button className="m-2">Buy Now</button>
                   </Link>

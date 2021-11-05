@@ -30,7 +30,7 @@ function App() {
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/product/:id" component={ProductScreen} />
-            <Route path="/cart" component={Cart} />
+            <Route path="/cart/:id" component={Cart} />
             <Route path="/wishlist" component={Wishlist} />
             <Route path="/shipping" component={ShippingScreen} />
             <Route path="/payment" component={PaymentScreen} />
