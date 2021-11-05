@@ -6,7 +6,7 @@ import Heart from "./images/heart.png";
 import "../styles.css";
 import products from "../products";
 import { Link } from "react-router-dom";
-
+import { addProductsToWishlist } from "../actions/wishlistActions";
 import { listProductDetails } from "../actions/productActions";
 
 const ProductScreen = ({ match, history }) => {
@@ -20,14 +20,22 @@ const ProductScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const wishlistCreate = useSelector((state) => state.wishlistCreate);
+  // const { wishlistItem } = wishlistCreate;
+
   useEffect(() => {
     if (!product._id || product._id !== match.params.id) {
       dispatch(listProductDetails(match.params.id));
     }
+    setQty(product.minQuantity);
   }, [dispatch, match]);
 
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
+  };
+
+  const addToWishlistHandler = () => {
+    dispatch(addProductsToWishlist(match.params.id));
   };
 
   return (
@@ -43,6 +51,7 @@ const ProductScreen = ({ match, history }) => {
                 width="auto"
                 height="600"
                 fluid
+                onClick={addToWishlistHandler}
               ></Image>
               <Image
                 src={Heart}
@@ -60,7 +69,7 @@ const ProductScreen = ({ match, history }) => {
             <thead className="bg-blue white">
               <tr>
                 <th scope="col">Price</th>
-                <th scope="col">{product.price * qty}</th>
+                <th scope="col">{product.price}</th>
               </tr>
             </thead>
             <tbody className="bg-lightblue">
@@ -68,7 +77,7 @@ const ProductScreen = ({ match, history }) => {
                 <th scope="row" className="grey">
                   GST
                 </th>
-                <td>{0.18 * product.price}</td>
+                <td>{(0.18 * product.price).toFixed(2)}</td>
               </tr>
               <tr>
                 <th scope="row" className="grey">
@@ -87,7 +96,7 @@ const ProductScreen = ({ match, history }) => {
                   Total Price
                 </th>
                 <td colspan="2" className="font-weight-bold">
-                  {product.price}
+                  {product.price * qty}
                 </td>
               </tr>
               <tr className="table-border">
@@ -98,7 +107,7 @@ const ProductScreen = ({ match, history }) => {
                     onClick={() => {
                       setQty(qty - 1);
                     }}
-                    disabled={qty === 1}
+                    disabled={qty === product.minQuantity}
                   >
                     -
                   </button>
@@ -108,6 +117,7 @@ const ProductScreen = ({ match, history }) => {
                     onClick={() => {
                       setQty(qty + 1);
                     }}
+                    disabled={qty === product.maxQuantity}
                   >
                     +
                   </button>
