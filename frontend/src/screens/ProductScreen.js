@@ -6,9 +6,8 @@ import Heart from "./images/heart.png";
 import "../styles.css";
 import products from "../products";
 import { Link } from "react-router-dom";
-
-import { listProductDetails } from "../actions/productActions.js";
-import { addProductsToWishlist } from "../actions/wishlistActions.js"
+import { addProductsToWishlist } from "../actions/wishlistActions";
+import { listProductDetails } from "../actions/productActions";
 
 const ProductScreen = ({ match, history }) => {
   const [qty, setQty] = useState(1);
@@ -22,21 +21,26 @@ const ProductScreen = ({ match, history }) => {
   const { userInfo } = userLogin;
 
   const wishlistCreate = useSelector((state) => state.wishlistCreate);
-  //const { wishlistItem } = wishlistCreate
+  // const { wishlistItem } = wishlistCreate;
 
   useEffect(() => {
     if (!product._id || product._id !== match.params.id) {
       dispatch(listProductDetails(match.params.id));
     }
-  }, [dispatch, match, product._id]);
+    setQty(() => product.minQuantity);
+  }, [dispatch, match]);
 
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
   };
 
   const addToWishlistHandler = () => {
-    dispatch(addProductsToWishlist(match.params.id));
-  }
+    if (!userInfo) {
+      history.push("/login");
+    } else {
+      dispatch(addProductsToWishlist(userInfo._id, match.params.id));
+    }
+  };
 
   return (
     <Container className="pt-5">
@@ -59,6 +63,7 @@ const ProductScreen = ({ match, history }) => {
                 width="30"
                 height="30"
                 fluid
+                onClick={addToWishlistHandler}
               ></Image>
             </ListGroup.Item>
           </ListGroup>
@@ -69,7 +74,7 @@ const ProductScreen = ({ match, history }) => {
             <thead className="bg-blue white">
               <tr>
                 <th scope="col">Price</th>
-                <th scope="col">{product.price * qty}</th>
+                <th scope="col">{product.price}</th>
               </tr>
             </thead>
             <tbody className="bg-lightblue">
@@ -77,7 +82,7 @@ const ProductScreen = ({ match, history }) => {
                 <th scope="row" className="grey">
                   GST
                 </th>
-                <td>{0.18 * product.price}</td>
+                <td>{(0.18 * product.price).toFixed(2)}</td>
               </tr>
               <tr>
                 <th scope="row" className="grey">
@@ -96,7 +101,7 @@ const ProductScreen = ({ match, history }) => {
                   Total Price
                 </th>
                 <td colspan="2" className="font-weight-bold">
-                  {product.price}
+                  {product.price * qty}
                 </td>
               </tr>
               <tr className="table-border">
@@ -107,7 +112,7 @@ const ProductScreen = ({ match, history }) => {
                     onClick={() => {
                       setQty(qty - 1);
                     }}
-                    disabled={qty === 1}
+                    disabled={qty === product.minQuantity}
                   >
                     -
                   </button>
@@ -117,6 +122,7 @@ const ProductScreen = ({ match, history }) => {
                     onClick={() => {
                       setQty(qty + 1);
                     }}
+                    disabled={qty === product.maxQuantity}
                   >
                     +
                   </button>
@@ -124,10 +130,10 @@ const ProductScreen = ({ match, history }) => {
               </tr>
               <tr>
                 <td colspan="4">
-                  <Link to="/cart">
-                    <button className="m-2">Add to Cart</button>
-                  </Link>
-                  <Link to="/payment">
+                  <button className="m-2" onClick={addToCartHandler}>
+                    Add to Cart
+                  </button>
+                  <Link to="/shipping">
                     <button className="m-2">Buy Now</button>
                   </Link>
                 </td>

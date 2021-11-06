@@ -32,16 +32,22 @@ function Header() {
             <Nav className="nav-links">
               {userInfo ? (
                 <div className="d-flex">
-                  <LinkContainer to="/wishlist">
-                    <Nav.Link>
-                      <i className="far fa-heart"></i> Wishlist
-                    </Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to="/cart">
-                    <Nav.Link>
-                      <i className="fas fa-shopping-cart"></i> Cart
-                    </Nav.Link>
-                  </LinkContainer>
+                  {!userInfo.isManufacturer ? (
+                    <>
+                      <LinkContainer to="/wishlist">
+                        <Nav.Link>
+                          <i className="far fa-heart"></i> Wishlist
+                        </Nav.Link>
+                      </LinkContainer>
+                      <LinkContainer to="/cart">
+                        <Nav.Link>
+                          <i className="fas fa-shopping-cart"></i> Cart
+                        </Nav.Link>
+                      </LinkContainer>
+                    </>
+                  ) : (
+                    <></>
+                  )}
 
                   <NavDropdown
                     title={
@@ -66,7 +72,7 @@ function Header() {
               ) : (
                 <LinkContainer to="/login">
                   <Nav.Link className="auth-btn">
-                    <button>Sign Up / Log In</button>
+                    <button>Log In / Sign Up</button>
                   </Nav.Link>
                 </LinkContainer>
               )}

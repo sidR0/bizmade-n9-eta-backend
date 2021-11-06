@@ -4,8 +4,11 @@ import HomeScreen from "./screens/HomeScreen";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import ProductScreen from "./screens/ProductScreen";
+import ShippingScreen from "./screens/ShippingScreen";
 import PaymentScreen from "./screens/PaymentScreen";
+import Checkout from "./screens/Checkout";
 import OrderConfirmation from "./screens/OrderConfirmation";
+import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import DealerOrderHistory from "./screens/DealerOrderHistory";
 import ManufacOrderHistory from "./screens/ManufacOrderHistory";
 import EditProduct from "./screens/EditProduct";
@@ -29,9 +32,12 @@ function App() {
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/product/:id" component={ProductScreen} />
-            <Route path="/cart" component={Cart} />
+            <Route path="/cart/:id?" component={Cart} />
             <Route path="/wishlist" component={Wishlist} />
+            <Route path="/shipping" component={ShippingScreen} />
             <Route path="/payment" component={PaymentScreen} />
+            <Route path="/placeorder" component={PlaceOrderScreen} />
+            <Route path="/order/:id" component={Checkout} />
             <Route path="/orderconfirmation" component={OrderConfirmation} />
             <Route path="/dealer/orders" component={DealerOrderHistory} />
             <Route

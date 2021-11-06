@@ -26,6 +26,8 @@ import { CART_CLEAR_ITEMS } from "../constants/cartConstants";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
+    console.log("order is ");
+    console.log(JSON.stringify(order));
     dispatch({
       type: ORDER_CREATE_REQUEST,
     });

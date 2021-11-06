@@ -4,7 +4,7 @@ const orderSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: false,
       ref: "User",
     },
     orderItems: [
@@ -63,26 +63,6 @@ const orderSchema = mongoose.Schema(
       type: Number,
       required: true,
       default: 0.0,
-    },
-    isPaid: {
-      type: Boolean,
-      required: true,
-      default: true
-    },
-    isDelivered: {
-      type: Boolean,
-      required: true,
-      default: true
-    },
-    isProcessing: {
-      type: Boolean,
-      required: true,
-      default: true
-    },
-    isShipped: {
-      type: Boolean,
-      required: true,
-      default: true
     },
   },
   {
