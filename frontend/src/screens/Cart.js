@@ -1,6 +1,7 @@
-import React from "react";
-import cartItems from "../cartItems";
+import React, { useEffect } from "react";
+// import cartItems from "../cartItems";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
   Col,
@@ -10,8 +11,33 @@ import {
   Button,
   Card,
 } from "react-bootstrap";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 
-function Cart() {
+const Cart = ({ match, location, history }) => {
+  const productId = match.params.id;
+
+  const qty = location.search ? Number(location.search.split("=")[1]) : 1;
+
+  const dispatch = useDispatch();
+
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
+
+  useEffect(() => {
+    // dispatch(addToCart("617beac2ebca0edd2b2f7ede", "5"));
+    if (productId) {
+      dispatch(addToCart(productId, qty));
+    }
+  }, [dispatch, productId, qty]);
+
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id));
+  };
+
+  const checkoutHandler = () => {
+    history.push("/login?redirect=payment");
+  };
+
   return (
     <Row>
       <Col md={8}>
@@ -38,7 +64,15 @@ function Cart() {
                   </Col>
                   <Col md={2}>&#8377;{item.price}</Col>
                   <Col md={2}>
-                    <Form.Control as="select" value={item.qty}>
+                    <Form.Control
+                      as="select"
+                      value={item.qty}
+                      onChange={(e) =>
+                        dispatch(
+                          addToCart(item.product, Number(e.target.value))
+                        )
+                      }
+                    >
                       {[...Array(item.countInStock).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
                           {x + 1}
@@ -47,7 +81,11 @@ function Cart() {
                     </Form.Control>
                   </Col>
                   <Col md={2}>
-                    <Button type="button" variant="primary">
+                    <Button
+                      type="button"
+                      variant="primary"
+                      onClick={() => removeFromCartHandler(item.product)}
+                    >
                       {/* <i className="fas fa-trash"></i> */}
                       DELETE
                     </Button>
@@ -71,22 +109,21 @@ function Cart() {
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
             </ListGroup.Item>
-            <Link to="/payment">
-              <ListGroup.Item>
-                <Button
-                  type="button"
-                  className="btn-block"
-                  disabled={cartItems.length === 0}
-                >
-                  Proceed To Checkout
-                </Button>
-              </ListGroup.Item>
-            </Link>
+            <ListGroup.Item>
+              <Button
+                type="button"
+                className="btn-block"
+                disabled={cartItems.length === 0}
+                onClick={checkoutHandler}
+              >
+                Proceed To Checkout
+              </Button>
+            </ListGroup.Item>
           </ListGroup>
         </Card>
       </Col>
     </Row>
   );
-}
+};
 
 export default Cart;
