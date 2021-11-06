@@ -35,7 +35,11 @@ const ProductScreen = ({ match, history }) => {
   };
 
   const addToWishlistHandler = () => {
-    dispatch(addProductsToWishlist(match.params.id));
+    if (!userInfo) {
+      history.push("/login");
+    } else {
+      dispatch(addProductsToWishlist(userInfo._id, match.params.id));
+    }
   };
 
   return (
@@ -51,7 +55,6 @@ const ProductScreen = ({ match, history }) => {
                 width="auto"
                 height="600"
                 fluid
-                onClick={addToWishlistHandler}
               ></Image>
               <Image
                 src={Heart}
@@ -59,6 +62,7 @@ const ProductScreen = ({ match, history }) => {
                 width="30"
                 height="30"
                 fluid
+                onClick={addToWishlistHandler}
               ></Image>
             </ListGroup.Item>
           </ListGroup>

@@ -48,7 +48,7 @@ function HomeScreen() {
 
   useEffect(() => {
     dispatch(listProducts());
-    dispatch(listUsers());
+    // dispatch(listUsers());
   }, [dispatch]);
 
   return (
