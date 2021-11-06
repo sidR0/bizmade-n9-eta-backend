@@ -30,7 +30,7 @@ function HomeScreen() {
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => {
-    console.log(JSON.stringify(state));
+    // console.log(JSON.stringify(state));
     return state.productList;
   });
 

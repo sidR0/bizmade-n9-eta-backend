@@ -24,7 +24,6 @@ function Cart({ match, location, history }) {
   const { cartItems } = cart;
 
   useEffect(() => {
-    console.log("product id is " + productId + " and quantity is " + qty);
     if (productId) {
       dispatch(addToCart(productId, qty));
     }
@@ -35,7 +34,7 @@ function Cart({ match, location, history }) {
   };
 
   const checkoutHandler = () => {
-    //history.push('/login?redirect=shipping')
+    history.push("/login?redirect=shipping");
   };
 
   return (
@@ -101,17 +100,18 @@ function Cart({ match, location, history }) {
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
             </ListGroup.Item>
-            <Link to="/payment">
-              <ListGroup.Item>
-                <Button
-                  type="button"
-                  className="btn-block"
-                  disabled={cartItems.length === 0}
-                >
-                  Proceed To Checkout
-                </Button>
-              </ListGroup.Item>
-            </Link>
+            {/* <Link to="/payment"> */}
+            <ListGroup.Item>
+              <Button
+                type="button"
+                className="btn-block"
+                disabled={cartItems.length === 0}
+                onClick={checkoutHandler}
+              >
+                Proceed To Checkout
+              </Button>
+            </ListGroup.Item>
+            {/* </Link> */}
           </ListGroup>
         </Card>
       </Col>

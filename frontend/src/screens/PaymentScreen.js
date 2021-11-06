@@ -19,15 +19,14 @@ const PaymentScreen = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(savePaymentMethod(paymentMethod));
-    //history.push("/placeorder");
+    history.push("/placeorder");
   };
 
   return (
     <FormContainer>
-      <h1>Payment Method</h1>
-      <Form onSubmit={submitHandler}>
+      <p className="fw-bold">Payment Method</p>
+      <Form>
         <Form.Group>
-          <Form.Label as="legend">Select Method</Form.Label>
           <Col>
             <Form.Check
               type="radio"
@@ -48,7 +47,7 @@ const PaymentScreen = ({ history }) => {
           </Col>
         </Form.Group>
 
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="primary" onClick={submitHandler}>
           Continue
         </Button>
       </Form>
