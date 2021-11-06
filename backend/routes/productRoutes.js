@@ -6,10 +6,12 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  getTopProducts,
 } from "../controllers/productController.js";
 import { protect, manufacturer } from "../middleware/authMiddleware.js";
 
 router.route("/").get(getProducts).post(protect, manufacturer, createProduct);
+router.get("/top", getTopProducts);
 router
   .route("/:id")
   .get(getProductById)
