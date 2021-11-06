@@ -1,10 +1,19 @@
 import Button from "@restart/ui/esm/Button";
 import React from "react";
 import "../styles.css";
+import { useDispatch } from "react-redux";
 import { Container, Row, Col, Table, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+import { createOrder } from "../actions/orderActions.js";
+
 const PaymentScreen = () => {
+
+  const dispatch = useDispatch();
+
+  const createOrderHandler = () => {
+    dispatch(createOrder());
+  }
   return (
     <div>
       <Container>
@@ -79,7 +88,7 @@ const PaymentScreen = () => {
                 <tr className="bg-lightblue p-5">
                   <td colspan="2">
                     <Link to="/orderconfirmation">
-                      <Button variant="primary">Place Order</Button>
+                      <Button variant="primary" onClick={createOrderHandler}>Place Order</Button>
                     </Link>
                   </td>
                 </tr>

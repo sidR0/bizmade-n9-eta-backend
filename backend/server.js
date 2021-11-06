@@ -6,6 +6,16 @@ import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import wishlistRoutes from './routes/wishlistRoutes.js'
 import cartRoutes from './routes/cartRoutes.js';
+import multer from 'multer';
+import aws from 'aws-sdk';
+import multerS3 from 'multer-s3';
+import uuid from 'uuidv4';
+import mongodb from "mongodb";
+const MongoClient = mongodb.MongoClient;
+import path from 'path';
+
+
+const upload = multer({ dest: 'uploads/' })
 
 dotenv.config();
 

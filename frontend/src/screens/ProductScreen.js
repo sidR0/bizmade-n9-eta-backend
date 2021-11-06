@@ -7,8 +7,8 @@ import "../styles.css";
 import products from "../products";
 import { Link } from "react-router-dom";
 
-import { listProductDetails } from "../actions/productActions";
-import { addProductsToWishlist } from "../actions/wishlistActions"
+import { listProductDetails } from "../actions/productActions.js";
+import { addProductsToWishlist } from "../actions/wishlistActions.js"
 
 const ProductScreen = ({ match, history }) => {
   const [qty, setQty] = useState(1);
@@ -22,12 +22,11 @@ const ProductScreen = ({ match, history }) => {
   const { userInfo } = userLogin;
 
   const wishlistCreate = useSelector((state) => state.wishlistCreate);
-  const { wishlistItem } = wishlistCreate
+  //const { wishlistItem } = wishlistCreate
 
   useEffect(() => {
     if (!product._id || product._id !== match.params.id) {
       dispatch(listProductDetails(match.params.id));
-      dispatch(addProductsToWishlist(match.params.id));
     }
   }, [dispatch, match, product._id]);
 

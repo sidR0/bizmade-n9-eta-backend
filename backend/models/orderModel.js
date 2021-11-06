@@ -9,6 +9,7 @@ const orderSchema = mongoose.Schema(
     },
     orderItems: [
       {
+        id: mongoose.Schema.Types.ObjectId,
         name: { type: String, required: true },
         qty: { type: Number, required: true },
         image: { type: String, required: true },
@@ -18,11 +19,10 @@ const orderSchema = mongoose.Schema(
           required: true,
           ref: "Product",
         },
-	      status: {
+	      status : {
           type: String,
-          enum : ['Paid','Processing','Shipped','Delivered','Not Paid'],
-          default: 'Not Paid'
-        },
+          required: true
+        }
       },
     ],
     shippingAddress: {
@@ -63,7 +63,27 @@ const orderSchema = mongoose.Schema(
       type: Number,
       required: true,
       default: 0.0,
-    }
+    },
+    isPaid: {
+      type: Boolean,
+      required: true,
+      default: true
+    },
+    isDelivered: {
+      type: Boolean,
+      required: true,
+      default: true
+    },
+    isProcessing: {
+      type: Boolean,
+      required: true,
+      default: true
+    },
+    isShipped: {
+      type: Boolean,
+      required: true,
+      default: true
+    },
   },
   {
     timestamps: true,

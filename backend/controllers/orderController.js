@@ -64,6 +64,37 @@ const getOrderById = asyncHandler(async (req, res) => {
   }
 })
 
+const getManufacturerOrders = asyncHandler(async (req, res) => {
+
+const order = await Order.find({ "orderIems.product.user": { $elemMatch: { user: req.body.user }}})
+
+if (order) {
+  res.json(order)
+} else {
+  res.status(404)
+  throw new Error('Order not found')
+}
+
+})
+
+const updateOrderItemStatus = asyncHandler(async (req, res) => {
+
+  //const order = await Order.updateOne({ _id: req.params._id, "orderItems._id": req.params._id},
+  //{ $set: { "orderItems.$.status": req.body.status}})
+  const order = await Order.findById(req.params.id)
+  
+  if (order) {
+    order.isPaid = true
+    
+    const updatedOrder = await order.save()
+    console.log(updatedOrder);
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+
 // @desc    Update order to paid
 // @route   GET /api/orders/:id/pay
 // @access  Private
@@ -110,7 +141,8 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 // @route   GET /api/orders/myorders
 // @access  Private
 const getMyOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: user })
+ 
+  const orders = await Order.find({ user: req.params.id })
   res.json(orders)
 })
 
@@ -118,7 +150,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
 // @route   GET /api/orders
 // @access  Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({}).populate('user', 'id name')
+  const orders = await Order.find({}).populate('user', 'id name');
   res.json(orders)
 })
 
@@ -129,4 +161,6 @@ export {
   updateOrderToDelivered,
   getMyOrders,
   getOrders,
+  getManufacturerOrders,
+  updateOrderItemStatus
 }
