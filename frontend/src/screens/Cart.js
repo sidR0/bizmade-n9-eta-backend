@@ -24,7 +24,6 @@ const Cart = ({ match, location, history }) => {
   const { cartItems } = cart;
 
   useEffect(() => {
-    // dispatch(addToCart("617beac2ebca0edd2b2f7ede", "5"));
     if (productId) {
       dispatch(addToCart(productId, qty));
     }
