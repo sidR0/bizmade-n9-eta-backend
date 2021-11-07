@@ -6,7 +6,7 @@ import Heart from "./images/heart.png";
 import "../styles.css";
 import products from "../products";
 import { Link } from "react-router-dom";
-import { addProductsToWishlist } from "../actions/wishlistActions";
+import { addToWishlist } from "../actions/wishlistActions";
 import { listProductDetails } from "../actions/productActions";
 
 const ProductScreen = ({ match, history }) => {
@@ -38,7 +38,8 @@ const ProductScreen = ({ match, history }) => {
     if (!userInfo) {
       history.push("/login");
     } else {
-      dispatch(addProductsToWishlist(userInfo._id, match.params.id));
+      dispatch(addToWishlist(match.params.id, qty));
+      history.push(`/wishlist`);
     }
   };
 

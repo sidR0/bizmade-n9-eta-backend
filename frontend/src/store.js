@@ -34,6 +34,7 @@ import {
 } from "./reducers/orderReducers";
 
 import { cartReducer } from "./reducers/cartReducers";
+import { wishlistReducer } from "./reducers/wishlistReducer";
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -41,10 +42,10 @@ const reducer = combineReducers({
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,
   productDelete: productDeleteReducer,
-  productReviewCreate: productReviewCreateReducer,
   productTopRated: productTopRatedReducer,
 
   cart: cartReducer,
+  wishlist: wishlistReducer,
 
   userRegister: userRegisterReducer,
   userLogin: userLoginReducer,

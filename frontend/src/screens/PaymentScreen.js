@@ -30,10 +30,10 @@ const PaymentScreen = ({ history }) => {
           <Col>
             <Form.Check
               type="radio"
-              label="Rajorpay"
-              id="Rajorpay"
+              label="Razorpay"
+              id="Razorpay"
               name="paymentMethod"
-              value="Rajorpay"
+              value="Razorpay"
               onChange={(e) => setPaymentMethod(e.target.value)}
             ></Form.Check>
             <Form.Check

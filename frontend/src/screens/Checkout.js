@@ -83,6 +83,7 @@ const Checkout = ({ match, history }) => {
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult));
+    history.push(`/orderconfirmation`);
   };
 
   const deliverHandler = () => {
@@ -96,15 +97,16 @@ const Checkout = ({ match, history }) => {
     <Message></Message>
   ) : (
     <>
-      <h1>Order {order._id}</h1>
+      <h3>Order {order._id}</h3>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>Shipping</h2>
+              <h3>Shipping</h3>
               <p>{/* <strong>Name: </strong> {order.user.name} */}</p>
               <p>
-                <strong>Email: </strong>{" "}
+                <strong>Email: </strong>
+                {order.shippingAddress.email}
                 {/* <a href={`mailto:${order.user.email}`}>{order.user.email}</a> */}
               </p>
               <p>
@@ -113,13 +115,13 @@ const Checkout = ({ match, history }) => {
                 {order.shippingAddress.postalCode},{" "}
                 {order.shippingAddress.country}
               </p>
-              {order.isDelivered ? (
+              {/* {order.isDelivered ? (
                 <Message variant="success">
                   Delivered on {order.deliveredAt}
                 </Message>
               ) : (
                 <Message variant="danger">Not Delivered</Message>
-              )}
+              )} */}
             </ListGroup.Item>
 
             <ListGroup.Item>
@@ -128,11 +130,11 @@ const Checkout = ({ match, history }) => {
                 <strong>Method: </strong>
                 {order.paymentMethod}
               </p>
-              {order.isPaid ? (
+              {/* {order.isPaid ? (
                 <Message variant="success">Paid on {order.paidAt}</Message>
               ) : (
                 <Message variant="danger">Not Paid</Message>
-              )}
+              )} */}
             </ListGroup.Item>
 
             <ListGroup.Item>
