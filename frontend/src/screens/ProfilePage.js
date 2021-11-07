@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
+import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
 const ProfilePage = ({ location, history }) => {
   const [name, setName] = useState("");
@@ -30,11 +31,27 @@ const ProfilePage = ({ location, history }) => {
     if (!userInfo) {
       history.push("/login");
     } else {
-      setName(userInfo.name);
-      setEmail(userInfo.email);
-      setPhoneNumber(userInfo.phoneNumber);
+      if (!user || !user.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
+        dispatch(getUserDetails("profile"));
+      } else {
+        setName(userInfo.name);
+        setEmail(userInfo.email);
+        setPhoneNumber(userInfo.phoneNumber);
+      }
     }
   }, [dispatch, history, userInfo, user, success]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setMessage("Passwords do not match");
+    } else {
+      dispatch(
+        updateUserProfile({ id: user._id, name, email, phoneNumber, password })
+      );
+    }
+  };
 
   return (
     <div>
@@ -48,7 +65,7 @@ const ProfilePage = ({ location, history }) => {
         ) : error ? (
           <Message variant="danger">{error}</Message>
         ) : (
-          <Form>
+          <Form onSubmit={submitHandler}>
             <Row className="justify-content-center">
               <Col md={6}>
                 <Form.Group
@@ -107,8 +124,8 @@ const ProfilePage = ({ location, history }) => {
                     Phone Number
                   </Form.Label>
                   <Form.Control
-                    type="phone"
-                    placeholder="Enter phoneNumber"
+                    type="text"
+                    placeholder="Enter Phone Number"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     rows={1}
@@ -153,11 +170,9 @@ const ProfilePage = ({ location, history }) => {
                     cols={1}
                   />
                 </Form.Group>
-                <Link to="/">
-                  <Button variant="primary" type="submit" className="m-4">
-                    SAVE CHANGES
-                  </Button>
-                </Link>
+                <Button variant="primary" type="submit" className="m-4">
+                  SAVE CHANGES
+                </Button>
                 <Link to="/">
                   <Button variant="primary" type="submit" className="m-4">
                     CANCEL
