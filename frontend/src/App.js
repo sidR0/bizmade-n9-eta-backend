@@ -45,6 +45,12 @@ function App() {
               component={ManufacOrderHistory}
             />
             <Route path="/search/:keyword" component={HomeScreen} exact />
+            <Route path="/page/:pageNumber" component={HomeScreen} exact />
+            <Route
+              path="/search/:keyword/page/:pageNumber"
+              component={HomeScreen}
+              exact
+            />
             <Route path="/editproduct/:id" component={EditProduct} />
             <Route path="/addproduct" component={AddProduct} />
             <Route path="/profile" component={ProfilePage} />

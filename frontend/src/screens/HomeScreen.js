@@ -11,6 +11,7 @@ import { listDataCreator } from "../actions/combinedActions.js";
 import ManufacLandingPage from "./ManufacLandingPage";
 import { listProducts } from "../actions/productActions";
 import { listUsers } from "../actions/userActions";
+import Paginate from "../components/Paginate";
 
 function HomeScreen({ match }) {
   // const [products, setProducts] = useState([]);
@@ -27,7 +28,7 @@ function HomeScreen({ match }) {
   // const loading = true
   // const error = null
   const keyword = match.params.keyword;
-
+  const pageNumber = match.params.pageNumber || 1;
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => {
@@ -38,7 +39,7 @@ function HomeScreen({ match }) {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const { loading, products, error } = productList;
+  const { loading, error, products, page, pages } = productList;
 
   const userList = useSelector((state) => state.userList);
 
@@ -48,9 +49,8 @@ function HomeScreen({ match }) {
   // }, [dispatch])
 
   useEffect(() => {
-    dispatch(listProducts(keyword));
-    // dispatch(listUsers());
-  }, [dispatch, keyword]);
+    dispatch(listProducts(keyword, pageNumber));
+  }, [dispatch, keyword, pageNumber]);
 
   return (
     <>
@@ -100,13 +100,20 @@ function HomeScreen({ match }) {
             ) : (
               //can give error boundary here becuase product_list_fail is called after 'product is not defined' error is thrown (when case:PRODUCT_LIST_SUCCESS is returning wrong values),
               //so product is assigned with empty array after that when code in product reducer case:PRODUCT_LIST_FAIL is runs
-              <Row>
-                {products.map((product) => (
-                  <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                    <Product product={product} />
-                  </Col>
-                ))}
-              </Row>
+              <>
+                <Row>
+                  {products.map((product) => (
+                    <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                      <Product product={product} />
+                    </Col>
+                  ))}
+                </Row>
+                <Paginate
+                  pages={pages}
+                  page={page}
+                  keyword={keyword ? keyword : ""}
+                />
+              </>
             )}
           </Row>
         </>
