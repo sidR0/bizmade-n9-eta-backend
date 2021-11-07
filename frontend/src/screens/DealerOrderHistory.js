@@ -17,6 +17,7 @@ const DealerOrderHistory = ({ history, match }) => {
 
   const orderListMy = useSelector((state) => state.orderListMy);
   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
+  console.log(orders);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -35,7 +36,7 @@ const DealerOrderHistory = ({ history, match }) => {
   return (
     <div>
       <>
-        <h1>{userInfo.name}'s Orders</h1>
+        <h3>{userInfo.name}'s Orders</h3>
         {/* <p>{userInfo._id}</p> */}
         {loadingOrders ? (
           <Loader />
@@ -56,13 +57,17 @@ const DealerOrderHistory = ({ history, match }) => {
               {orders.map((order) => (
                 <tr key={order._id}>
                   <td>{order._id}</td>
-                  <td>{order.name}</td>
+
+                  {order.orderItems.map((o) => (
+                    <td>{o.name}</td>
+                  ))}
+
                   <td>{order.createdAt.substring(0, 10)}</td>
                   <td>₹{order.totalPrice}</td>
                   <td>
                     {order.isPaid ? (
                       <i
-                        className="fas fa-times"
+                        className="fas fa-check"
                         style={{ color: "green" }}
                       ></i>
                     ) : (
