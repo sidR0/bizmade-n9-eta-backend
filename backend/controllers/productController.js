@@ -58,7 +58,7 @@ const createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
     user,
     name,
-    image: "/images/alexa.jpg",
+    image,
     manufacturer,
     category,
     description,
