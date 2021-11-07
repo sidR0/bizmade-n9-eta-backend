@@ -200,7 +200,7 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
   }
 };
 
-export const listMyOrders = () => async (dispatch, getState) => {
+export const listMyOrders = (user) => async (dispatch, getState) => {
   try {
     dispatch({
       type: ORDER_LIST_MY_REQUEST,
@@ -212,11 +212,12 @@ export const listMyOrders = () => async (dispatch, getState) => {
 
     const config = {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.get(`/api/orders/myorders`, config);
+    const { data } = await axios.get(`/api/orders/myorders`, {user}, config);
 
     dispatch({
       type: ORDER_LIST_MY_SUCCESS,
