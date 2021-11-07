@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "../styles.css";
 import { Container, Button, Form, Row, Col } from "react-bootstrap";
@@ -8,6 +8,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listProducts, createProduct } from "../actions/productActions";
 import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
+import Resizer from "react-image-file-resizer";
 
 const AddProduct = ({ history }) => {
   const [name, setName] = useState("");
@@ -45,30 +46,49 @@ const AddProduct = ({ history }) => {
     }
   }, [dispatch, history, userInfo, successCreate]);
 
+  const resizeFile = (file) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        300,
+        300,
+        "JPEG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "file"
+      );
+    });
+
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
+    const image = await resizeFile(file);
     const formData = new FormData();
-    formData.append('image', file);
+    console.log(image);
+    formData.append("image", image);
     setUploading(true);
 
     try {
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
+          "Content-Type": "multipart/form-data",
+        },
+      };
 
-      const { data } = await axios.post('/api/upload', formData, config);
+      const { data } = await axios.post("/api/upload", formData, config);
 
-      setImage(data)
-      setUploading(false)
-    } catch(error) {
+      setImage(data);
+      setUploading(false);
+    } catch (error) {
       console.log(error);
       setUploading(false);
     }
-  }
+  };
 
-  const createProductHandler = () => {
+  const createProductHandler = (e) => {
+    e.preventDefault();
     dispatch(
       createProduct({
         user: userInfo._id,
@@ -117,10 +137,7 @@ const AddProduct = ({ history }) => {
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </Form.Group>
-              <Form.Group
-                className="mb-1"
-                controlId="description"
-              >
+              <Form.Group className="mb-1" controlId="description">
                 <Form.Label className="float-start fw-bold">
                   Description
                 </Form.Label>
@@ -148,10 +165,7 @@ const AddProduct = ({ history }) => {
               </Form.Group>
             </Col>
             <Col md={6}>
-              <Form.Group
-                className="mb-1"
-                controlId="countInStock"
-              >
+              <Form.Group className="mb-1" controlId="countInStock">
                 <Form.Label className="float-start fw-bold">
                   Count In Stock
                 </Form.Label>
@@ -164,10 +178,7 @@ const AddProduct = ({ history }) => {
                   cols={2}
                 />
               </Form.Group>
-              <Form.Group
-                className="mb-1"
-                controlId="category"
-              >
+              <Form.Group className="mb-1" controlId="category">
                 <Form.Label className="float-start fw-bold">
                   Category
                 </Form.Label>
@@ -182,14 +193,14 @@ const AddProduct = ({ history }) => {
               </Form.Group>
               <Form.Group controlId="image" className="mb-1">
                 <Form.Label className="float-start fw-bold">Image</Form.Label>
-                <Form.Control type="file"
-                id="image-file" 
-                label="choose File" 
-                custom 
-                onChange={uploadFileHandler}
-                >
-                </Form.Control>
-                { uploading && <Loader /> }
+                <Form.Control
+                  type="file"
+                  id="image-file"
+                  label="choose File"
+                  custom
+                  onChange={uploadFileHandler}
+                ></Form.Control>
+                {uploading && <Loader />}
               </Form.Group>
               <Form.Group className="mb-1" controlId="maxquantity">
                 <Form.Label className="float-start fw-bold">
