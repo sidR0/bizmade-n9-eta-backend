@@ -1,5 +1,8 @@
 import express from "express";
 const router = express.Router();
+import multer from 'multer';
+const upload = multer({dest: 'uploads/'})
+
 import {
   getProducts,
   getProductById,
@@ -17,5 +20,6 @@ router
   .get(getProductById)
   .put(protect, manufacturer, updateProduct)
   .delete(protect, manufacturer, deleteProduct);
+
 
 export default router;
