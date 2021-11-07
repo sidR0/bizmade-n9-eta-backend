@@ -92,35 +92,42 @@ function HomeScreen({ match }) {
             ) : (
               //can give error boundary here becuase product_list_fail is called after 'product is not defined' error is thrown (when case:PRODUCT_LIST_SUCCESS is returning wrong values),
               //so product is assigned with empty array after that when code in product reducer case:PRODUCT_LIST_FAIL is runs
-              <Row>
-                <Col md={3}>
-                  <div id="homepage-container">
-                    <div className="carousal"></div>
-                    <div className="products-list"></div>
-                    <div className="filter">
-                      <div className="header">Browse Categories</div>
-                      {categories.map((category) => {
-                        <input type="checkbox" value={category}>
-                          {category}
-                        </input>;
-                      })}
+              <>
+                <Row>
+                  <Col md={3}>
+                    <div id="homepage-container">
+                      <div className="carousal"></div>
+                      <div className="products-list"></div>
+                      <div className="filter">
+                        <div className="header">Browse Categories</div>
+                        {categories.map((category) => {
+                          <input type="checkbox" value={category}>
+                            {category}
+                          </input>;
+                        })}
 
-                      <div className="all">All</div>
-                      <div className="clothes">Clothes</div>
-                      <div className="medicines">Medicines</div>
-                      <div className="grocery">Grocery</div>
-                      <div className="shoes">Shoes</div>
-                      <div className="phone">Phones</div>
-                      <div className="tyres">Tyres</div>
+                        <div className="all">All</div>
+                        <div className="clothes">Clothes</div>
+                        <div className="medicines">Medicines</div>
+                        <div className="grocery">Grocery</div>
+                        <div className="shoes">Shoes</div>
+                        <div className="phone">Phones</div>
+                        <div className="tyres">Tyres</div>
+                      </div>
                     </div>
-                  </div>
-                </Col>
-                {products.map((product) => (
-                  <Col key={product._id} sm={12} md={9} lg={4} xl={3}>
-                    <Product product={product} />
                   </Col>
-                ))}
-              </Row>
+                  {products.map((product) => (
+                    <Col key={product._id} sm={12} md={9} lg={4} xl={3}>
+                      <Product product={product} />
+                    </Col>
+                  ))}
+                </Row>
+                <Paginate
+                  pages={pages}
+                  page={page}
+                  keyword={keyword ? keyword : ""}
+                />
+              </>
             )}
           </Row>
         </>
