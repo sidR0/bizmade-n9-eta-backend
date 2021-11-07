@@ -42,7 +42,7 @@ function App() {
               path="/orderconfirmation/:id"
               component={OrderConfirmation}
             />
-            <Route path="/dealer/orders" component={DealerOrderHistory} />
+            <Route path="/dealer/orders/:id" component={DealerOrderHistory} />
             <Route
               path="/manufacturer/orders"
               component={ManufacOrderHistory}
