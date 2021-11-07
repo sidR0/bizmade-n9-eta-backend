@@ -39,6 +39,14 @@ function HomeScreen() {
 
   const { loading, products, error } = productList;
 
+  var category = [];
+  products.map((p) => {
+    category.push(p.category);
+  });
+  const categories = [new Set(category)];
+  categories.slice(0);
+  console.log(categories);
+
   const userList = useSelector((state) => state.userList);
 
   // useEffect(() => {
@@ -72,36 +80,42 @@ function HomeScreen() {
         <>
           <ProductCarousel />
           <Row>
-            <Col>
-              <div id="homepage-container">
-                <div className="carousal"></div>
-                <div className="products-list"></div>
-                <div className="filter">
-                  <div className="header">Browse Categories</div>
-                  <div className="all">All</div>
-                  <div className="clothes">Clothes</div>
-                  <div className="medicines">Medicines</div>
-                  <div className="grocery">Grocery</div>
-                  <div className="shoes">Shoes</div>
-                  <div className="phone">Phones</div>
-                  <div className="tyres">Tyres</div>
-                </div>
-              </div>
-            </Col>
             {loading ? (
-              <Col className="col-10">
+              <Col className="col-10" md={9}>
                 <h2>Loading...</h2>
               </Col>
             ) : error ? (
-              <Col className="col-10">
+              <Col className="col-10" md={9}>
                 <h3>{error}</h3>
               </Col>
             ) : (
               //can give error boundary here becuase product_list_fail is called after 'product is not defined' error is thrown (when case:PRODUCT_LIST_SUCCESS is returning wrong values),
               //so product is assigned with empty array after that when code in product reducer case:PRODUCT_LIST_FAIL is runs
               <Row>
+                <Col md={3}>
+                  <div id="homepage-container">
+                    <div className="carousal"></div>
+                    <div className="products-list"></div>
+                    <div className="filter">
+                      <div className="header">Browse Categories</div>
+                      {categories.map((category) => {
+                        <input type="checkbox" value={category}>
+                          {category}
+                        </input>;
+                      })}
+
+                      <div className="all">All</div>
+                      <div className="clothes">Clothes</div>
+                      <div className="medicines">Medicines</div>
+                      <div className="grocery">Grocery</div>
+                      <div className="shoes">Shoes</div>
+                      <div className="phone">Phones</div>
+                      <div className="tyres">Tyres</div>
+                    </div>
+                  </div>
+                </Col>
                 {products.map((product) => (
-                  <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <Col key={product._id} sm={12} md={9} lg={4} xl={3}>
                     <Product product={product} />
                   </Col>
                 ))}
