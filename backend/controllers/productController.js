@@ -23,6 +23,7 @@ const getProductById = asyncHandler(async (req, res) => {
   }
 });
 
+
 // @desc    Create a product
 // @route   POST /api/products
 // @access  Private/Admin
@@ -42,7 +43,7 @@ const createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
     user,
     name,
-    image: "/images/alexa.jpg",
+    image,
     manufacturer,
     category,
     description,
@@ -113,5 +114,5 @@ export {
   getProductById,
   createProduct,
   updateProduct,
-  deleteProduct,
+  deleteProduct
 };
