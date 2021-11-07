@@ -12,7 +12,7 @@ import ManufacLandingPage from "./ManufacLandingPage";
 import { listProducts } from "../actions/productActions";
 import { listUsers } from "../actions/userActions";
 
-function HomeScreen() {
+function HomeScreen({ match }) {
   // const [products, setProducts] = useState([]);
 
   // useEffect(() => {
@@ -26,6 +26,7 @@ function HomeScreen() {
   // const products = []
   // const loading = true
   // const error = null
+  const keyword = match.params.keyword;
 
   const dispatch = useDispatch();
 
@@ -47,9 +48,9 @@ function HomeScreen() {
   // }, [dispatch])
 
   useEffect(() => {
-    dispatch(listProducts());
+    dispatch(listProducts(keyword));
     // dispatch(listUsers());
-  }, [dispatch]);
+  }, [dispatch, keyword]);
 
   return (
     <>

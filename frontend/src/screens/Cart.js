@@ -1,6 +1,7 @@
-import React from "react";
-import cartItems from "../cartItems";
+import React, { useEffect } from "react";
+// import cartItems from "../cartItems";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
   Col,
@@ -10,12 +11,11 @@ import {
   Button,
   Card,
 } from "react-bootstrap";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../actions/cartActions";
 
-function Cart({ match, location, history }) {
+const Cart = ({ match, location, history }) => {
   const productId = match.params.id;
+
   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
   const dispatch = useDispatch();
@@ -63,7 +63,15 @@ function Cart({ match, location, history }) {
                   </Col>
                   <Col md={2}>&#8377;{item.price}</Col>
                   <Col md={2}>
-                    <Form.Control as="select" value={item.qty}>
+                    <Form.Control
+                      as="select"
+                      value={item.qty}
+                      onChange={(e) =>
+                        dispatch(
+                          addToCart(item.product, Number(e.target.value))
+                        )
+                      }
+                    >
                       {[...Array(item.countInStock).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
                           {x + 1}
@@ -117,6 +125,6 @@ function Cart({ match, location, history }) {
       </Col>
     </Row>
   );
-}
+};
 
 export default Cart;
