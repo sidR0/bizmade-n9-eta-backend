@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Row, Col, Table, Image } from "react-bootstrap";
 import "../styles.css";
 import { useDispatch, useSelector } from "react-redux";
+import Button from "@restart/ui/esm/Button";
+import { Link } from "react-router-dom";
 
-const OrderConfirmation = () => {
-  const orderDetails = useSelector((state) => state.orderDetails);
-  const { order, loading, error } = orderDetails;
+const OrderConfirmation = ({ match, history }) => {
+  const orderId = match.params.id;
+  const date = Date(Date.now()).toString().split("GMT")[0];
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo || userInfo.isManufacturer) {
+      history.push("/login");
+    }
+  }, []);
+  // const orderDetails = useSelector((state) => state.orderDetails);
+  // const { order, loading, error } = orderDetails;
   return (
     <div>
       <Container>
@@ -13,18 +25,18 @@ const OrderConfirmation = () => {
         <Row>
           <Col md={4}>
             <p className="fw-bold">Order Number</p>
-            <p>6500</p>
+            <p>{orderId}</p>
           </Col>
           <Col md={4}>
             <p className="fw-bold">Date</p>
-            <p>February 21, 2021</p>
+            <p>{date}</p>
           </Col>
           <Col md={4}>
-            <p className="fw-bold">Total</p>
-            <p>69,99</p>
+            <p className="fw-bold">Payment Status</p>
+            <p>Paid</p>
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <h2 className="p-4">Order Details</h2>
           <Table className="table">
             <thead className="bg-lightblue">
@@ -71,6 +83,18 @@ const OrderConfirmation = () => {
               </tr>
             </tbody>
           </Table>
+        </Row> */}
+        <Row>
+          <Col md={12} style={{ marginTop: "30px" }}>
+            <Link to="/">
+              <Button>Continue Shopping</Button>
+            </Link>
+            <Link to="/dealer/orders">
+              <Button type="submit" variant="primary">
+                My Orders
+              </Button>
+            </Link>
+          </Col>
         </Row>
       </Container>
     </div>

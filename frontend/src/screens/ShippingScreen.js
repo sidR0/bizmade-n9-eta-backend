@@ -1,5 +1,5 @@
 import Button from "@restart/ui/esm/Button";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../styles.css";
@@ -11,6 +11,9 @@ import { Form } from "react-bootstrap";
 // import CheckoutSteps from '../components/CheckoutSteps'
 import { saveShippingAddress } from "../actions/cartActions";
 import PaymentScreen from "./PaymentScreen";
+import { createOrder } from "../actions/orderActions";
+import { ORDER_CREATE_RESET } from "../constants/orderConstants";
+import { USER_DETAILS_RESET } from "../constants/userConstants";
 
 const ShippingScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart);
@@ -29,7 +32,7 @@ const ShippingScreen = ({ history }) => {
     Number(cart.shippingPrice) +
     Number(cart.taxPrice)
   ).toFixed(2);
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("PayPal");
 
   const [firstName, setFirstName] = useState(shippingAddress.firstName);
   const [lastName, setLastname] = useState(shippingAddress.lastName);
@@ -41,6 +44,34 @@ const ShippingScreen = ({ history }) => {
   const [phone, setPhone] = useState(shippingAddress.phone);
 
   const dispatch = useDispatch();
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, success, error } = orderCreate;
+
+  useEffect(() => {
+    // console.log("user info is ");
+    // console.log(JSON.stringify(user));
+    if (success) {
+      history.push(`/order/${order._id}`);
+      dispatch({ type: USER_DETAILS_RESET });
+      dispatch({ type: ORDER_CREATE_RESET });
+    }
+    // eslint-disable-next-line
+  }, [history, success]);
+
+  // const placeOrderHandler = () => {
+  //   dispatch(
+  //     createOrder({
+  //       // user,
+  //       orderItems: cart.cartItems,
+  //       shippingAddress: cart.shippingAddress,
+  //       paymentMethod: cart.paymentMethod,
+  //       itemsPrice: cart.itemsPrice,
+  //       shippingPrice: cart.shippingPrice,
+  //       taxPrice: cart.taxPrice,
+  //       totalPrice: cart.totalPrice,
+  //     })
+  //   );
+  // };
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -58,7 +89,19 @@ const ShippingScreen = ({ history }) => {
       })
     );
     dispatch(savePaymentMethod(paymentMethod));
-    history.push("/placeorder");
+    dispatch(
+      createOrder({
+        // user,
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
+    // history.push("/placeorder");
 
     // console.log(
     //   JSON.stringify({
@@ -191,6 +234,7 @@ const ShippingScreen = ({ history }) => {
                         id="PayPal"
                         name="paymentMethod"
                         value="PayPal"
+                        defaultChecked
                         onChange={(e) => setPaymentMethod(e.target.value)}
                       ></Form.Check>
                     </Col>
@@ -206,7 +250,7 @@ const ShippingScreen = ({ history }) => {
               <Button>Go Back</Button>
             </Link>
             <Button type="submit" variant="primary" onClick={submitHandler}>
-              Continue
+              Place Order
             </Button>
           </Col>
         </Row>
