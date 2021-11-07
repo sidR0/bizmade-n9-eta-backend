@@ -39,8 +39,8 @@ const PlaceOrderScreen = ({ history }) => {
   const { order, success, error } = orderCreate;
 
   useEffect(() => {
-    console.log("user info is ");
-    console.log(JSON.stringify(user));
+    // console.log("user info is ");
+    // console.log(JSON.stringify(user));
     if (success) {
       history.push(`/order/${order._id}`);
       dispatch({ type: USER_DETAILS_RESET });
@@ -71,9 +71,11 @@ const PlaceOrderScreen = ({ history }) => {
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>Shipping</h2>
-              <p>
-                <strong>Address:</strong>
+              <h3 style={{ textAlign: "left" }}>Shipping</h3>
+              <p style={{ textAlign: "left" }}>
+                <strong>
+                  <b>ADDRESS : </b>
+                </strong>
                 {cart.shippingAddress.address}, {cart.shippingAddress.city}{" "}
                 {cart.shippingAddress.postalCode},{" "}
                 {cart.shippingAddress.country}
@@ -81,19 +83,21 @@ const PlaceOrderScreen = ({ history }) => {
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <strong>Method: </strong>
-              {cart.paymentMethod}
+              <h3 style={{ textAlign: "left" }}>Payment Method</h3>
+              <p style={{ textAlign: "left" }}>
+                <strong>METHOD : </strong>
+                {cart.paymentMethod}
+              </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Order Items</h2>
+              <h3 style={{ textAlign: "left" }}>Order Items</h3>
               {cart.cartItems.length === 0 ? (
                 <Message>Your cart is empty</Message>
               ) : (
-                <ListGroup variant="flush">
+                <ListGroup variant="flush" style={{ textAlign: "left" }}>
                   {cart.cartItems.map((item, index) => (
-                    <ListGroup.Item key={index}>
+                    <ListGroup.Item key={index} style={{ paddingLeft: "0" }}>
                       <Row>
                         <Col md={1}>
                           <Image

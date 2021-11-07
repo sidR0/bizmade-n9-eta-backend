@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState, useEffect } from "react";
 import "../styles.css";
 import { Container, Button, Form, Row, Col } from "react-bootstrap";
@@ -43,6 +44,29 @@ const AddProduct = ({ history }) => {
       dispatch(listProducts());
     }
   }, [dispatch, history, userInfo, successCreate]);
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+
+      const { data } = await axios.post('/api/upload', formData, config);
+
+      setImage(data)
+      setUploading(false)
+    } catch(error) {
+      console.log(error);
+      setUploading(false);
+    }
+  }
 
   const createProductHandler = () => {
     dispatch(
@@ -95,7 +119,7 @@ const AddProduct = ({ history }) => {
               </Form.Group>
               <Form.Group
                 className="mb-1"
-                controlId="exampleForm.ControlTextarea1"
+                controlId="description"
               >
                 <Form.Label className="float-start fw-bold">
                   Description
@@ -126,7 +150,7 @@ const AddProduct = ({ history }) => {
             <Col md={6}>
               <Form.Group
                 className="mb-1"
-                controlId="exampleForm.ControlTextarea1"
+                controlId="countInStock"
               >
                 <Form.Label className="float-start fw-bold">
                   Count In Stock
@@ -142,7 +166,7 @@ const AddProduct = ({ history }) => {
               </Form.Group>
               <Form.Group
                 className="mb-1"
-                controlId="exampleForm.ControlTextarea1"
+                controlId="category"
               >
                 <Form.Label className="float-start fw-bold">
                   Category
@@ -156,9 +180,16 @@ const AddProduct = ({ history }) => {
                   cols={1}
                 />
               </Form.Group>
-              <Form.Group controlId="formFile" className="mb-1">
+              <Form.Group controlId="image" className="mb-1">
                 <Form.Label className="float-start fw-bold">Image</Form.Label>
-                <Form.Control type="file" />
+                <Form.Control type="file"
+                id="image-file" 
+                label="choose File" 
+                custom 
+                onChange={uploadFileHandler}
+                >
+                </Form.Control>
+                { uploading && <Loader /> }
               </Form.Group>
               <Form.Group className="mb-1" controlId="maxquantity">
                 <Form.Label className="float-start fw-bold">

@@ -15,10 +15,8 @@ import {
   ORDER_DELIVER_RESET,
 } from "../constants/orderConstants";
 import { PayPalButton } from "react-paypal-button-v2";
-
-const Loader = () => <h1>Loading</h1>;
-
-const Message = () => <h1>Message</h1>;
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 const Checkout = ({ match, history }) => {
   const orderId = match.params.id;
@@ -83,6 +81,7 @@ const Checkout = ({ match, history }) => {
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult));
+    history.push(`/orderconfirmation/${orderId}`);
   };
 
   const deliverHandler = () => {
@@ -96,53 +95,58 @@ const Checkout = ({ match, history }) => {
     <Message></Message>
   ) : (
     <>
-      <h1>Order {order._id}</h1>
+      <h2 style={{ marginTop: "20px" }}>ORDER ID : #{order._id}</h2>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>Shipping</h2>
+              <h3 style={{ textAlign: "left" }}>Shipping</h3>
               <p>{/* <strong>Name: </strong> {order.user.name} */}</p>
-              <p>
-                <strong>Email: </strong>{" "}
+              <p style={{ textAlign: "left" }}>
+                <strong>Email: </strong>
+                {order.shippingAddress.email}
                 {/* <a href={`mailto:${order.user.email}`}>{order.user.email}</a> */}
               </p>
-              <p>
+              <p style={{ textAlign: "left" }}>
+                <strong>Phone Number: </strong>
+                {order.shippingAddress.phone}
+              </p>
+              <p style={{ textAlign: "left" }}>
                 <strong>Address:</strong>
                 {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
                 {order.shippingAddress.postalCode},{" "}
                 {order.shippingAddress.country}
               </p>
-              {order.isDelivered ? (
+              {/* {order.isDelivered ? (
                 <Message variant="success">
                   Delivered on {order.deliveredAt}
                 </Message>
               ) : (
                 <Message variant="danger">Not Delivered</Message>
-              )}
+              )} */}
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <p>
+              <h2 style={{ textAlign: "left" }}>Payment Method</h2>
+              <p style={{ textAlign: "left" }}>
                 <strong>Method: </strong>
                 {order.paymentMethod}
               </p>
-              {order.isPaid ? (
+              {/* {order.isPaid ? (
                 <Message variant="success">Paid on {order.paidAt}</Message>
               ) : (
                 <Message variant="danger">Not Paid</Message>
-              )}
+              )} */}
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Order Items</h2>
+              <h2 style={{ textAlign: "left" }}>Order Items</h2>
               {order.orderItems.length === 0 ? (
                 <Message>Order is empty</Message>
               ) : (
-                <ListGroup variant="flush">
+                <ListGroup variant="flush" style={{ textAlign: "left" }}>
                   {order.orderItems.map((item, index) => (
-                    <ListGroup.Item key={index}>
+                    <ListGroup.Item key={index} style={{ paddingLeft: "0" }}>
                       <Row>
                         <Col md={1}>
                           <Image
@@ -168,7 +172,7 @@ const Checkout = ({ match, history }) => {
             </ListGroup.Item>
           </ListGroup>
         </Col>
-        <Col md={4}>
+        <Col md={4} style={{ marginTop: "20px" }}>
           <Card>
             <ListGroup variant="flush">
               <ListGroup.Item>

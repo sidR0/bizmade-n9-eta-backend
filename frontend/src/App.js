@@ -38,7 +38,10 @@ function App() {
             <Route path="/payment" component={PaymentScreen} />
             <Route path="/placeorder" component={PlaceOrderScreen} />
             <Route path="/order/:id" component={Checkout} />
-            <Route path="/orderconfirmation" component={OrderConfirmation} />
+            <Route
+              path="/orderconfirmation/:id"
+              component={OrderConfirmation}
+            />
             <Route path="/dealer/orders" component={DealerOrderHistory} />
             <Route
               path="/manufacturer/orders"

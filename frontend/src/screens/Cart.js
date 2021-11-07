@@ -72,9 +72,16 @@ const Cart = ({ match, location, history }) => {
                         )
                       }
                     >
-                      {[...Array(item.countInStock).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
+                      {[
+                        ...Array(
+                          item.maxQuantity - item.minQuantity + 1
+                        ).keys(),
+                      ].map((x) => (
+                        <option
+                          key={x + item.minQuantity}
+                          value={x + item.minQuantity}
+                        >
+                          {x + item.minQuantity}
                         </option>
                       ))}
                     </Form.Control>
