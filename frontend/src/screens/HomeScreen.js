@@ -44,7 +44,7 @@ function HomeScreen() {
     category.push(p.category);
   });
   const categories = [new Set(category)];
-  categories = categories[0];
+  categories.slice(0);
   console.log(categories);
 
   const userList = useSelector((state) => state.userList);
