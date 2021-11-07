@@ -19,6 +19,9 @@ const ShippingScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart);
   const { cartItems, shippingAddress } = cart;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
@@ -91,7 +94,7 @@ const ShippingScreen = ({ history }) => {
     dispatch(savePaymentMethod(paymentMethod));
     dispatch(
       createOrder({
-        // user,
+        user: userInfo._id,
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
@@ -234,7 +237,6 @@ const ShippingScreen = ({ history }) => {
                         id="PayPal"
                         name="paymentMethod"
                         value="PayPal"
-                        defaultChecked
                         onChange={(e) => setPaymentMethod(e.target.value)}
                       ></Form.Check>
                     </Col>
