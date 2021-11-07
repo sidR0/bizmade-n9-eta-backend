@@ -26,6 +26,8 @@ export const addToWishlist = (id, qty) => async (dispatch, getState) => {
       price: data.price,
       countInStock: data.countInStock,
       qty,
+      minQuantity: data.minQuantity,
+      maxQuantity: data.maxQuantity,
     },
   });
 

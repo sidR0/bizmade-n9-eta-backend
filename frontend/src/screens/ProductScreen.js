@@ -1,7 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { Row, Col, Image, Container, ListGroup, Card } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Image,
+  Container,
+  ListGroup,
+  Card,
+  Form,
+} from "react-bootstrap";
 import Heart from "./images/heart.png";
 import "../styles.css";
 import products from "../products";
@@ -10,12 +18,13 @@ import { addToWishlist } from "../actions/wishlistActions";
 import { listProductDetails } from "../actions/productActions";
 
 const ProductScreen = ({ match, history }) => {
-  const [qty, setQty] = useState(1);
-  const [gst, setGst] = useState(0);
-  const dispatch = useDispatch();
-
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
+
+  const [qty, setQty] = useState(1);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -26,12 +35,20 @@ const ProductScreen = ({ match, history }) => {
   useEffect(() => {
     if (!product._id || product._id !== match.params.id) {
       dispatch(listProductDetails(match.params.id));
+    } else {
+      setQty(product.minQuantity);
+      setTotalPrice((product.price + 0.18 * product.price).toFixed(0));
     }
-    setQty(() => product.minQuantity);
-  }, [dispatch, match]);
+    // setQty(product.minQuantity);
+    // setTotalPrice(product.price * product.minQuantity);
+  }, [dispatch, match, product]);
 
   const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${qty}`);
+    if (!userInfo) {
+      history.push("/login");
+    } else {
+      history.push(`/cart/${match.params.id}?qty=${qty}`);
+    }
   };
 
   const addToWishlistHandler = () => {
@@ -57,14 +74,18 @@ const ProductScreen = ({ match, history }) => {
                 height="600"
                 fluid
               ></Image>
-              <Image
+              {/* <Image
                 src={Heart}
                 className="heart"
                 width="30"
                 height="30"
                 fluid
                 onClick={addToWishlistHandler}
-              ></Image>
+              ></Image> */}
+              <i
+                class="fas fa-heart heart fa-2x"
+                onClick={addToWishlistHandler}
+              ></i>
             </ListGroup.Item>
           </ListGroup>
         </Col>
@@ -82,7 +103,7 @@ const ProductScreen = ({ match, history }) => {
                 <th scope="row" className="grey">
                   GST
                 </th>
-                <td>{(0.18 * product.price).toFixed(2)}</td>
+                <td>{(0.18 * product.price).toFixed(0)}</td>
               </tr>
               <tr>
                 <th scope="row" className="grey">
@@ -101,7 +122,7 @@ const ProductScreen = ({ match, history }) => {
                   Total Price
                 </th>
                 <td colspan="2" className="font-weight-bold">
-                  {product.price * qty}
+                  {totalPrice}
                 </td>
               </tr>
               <tr className="table-border">
@@ -128,14 +149,15 @@ const ProductScreen = ({ match, history }) => {
                   </button>
                 </td>
               </tr>
+
               <tr>
                 <td colspan="4">
-                  <button className="m-2" onClick={addToCartHandler}>
+                  <button className="w-75 m-2" onClick={addToCartHandler}>
                     Add to Cart
                   </button>
-                  <Link to="/shipping">
+                  {/* <Link to="/shipping">
                     <button className="m-2">Buy Now</button>
-                  </Link>
+                  </Link> */}
                 </td>
               </tr>
             </tbody>

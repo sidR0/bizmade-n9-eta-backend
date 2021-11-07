@@ -15,10 +15,8 @@ import {
   ORDER_DELIVER_RESET,
 } from "../constants/orderConstants";
 import { PayPalButton } from "react-paypal-button-v2";
-
-const Loader = () => <h1>Loading</h1>;
-
-const Message = () => <h1>Message</h1>;
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 const Checkout = ({ match, history }) => {
   const orderId = match.params.id;
@@ -97,7 +95,7 @@ const Checkout = ({ match, history }) => {
     <Message></Message>
   ) : (
     <>
-      <h3>Order {order._id}</h3>
+      <h2>ORDER ID : #{order._id}</h2>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">

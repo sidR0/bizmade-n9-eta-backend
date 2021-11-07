@@ -29,7 +29,7 @@ const ShippingScreen = ({ history }) => {
     Number(cart.shippingPrice) +
     Number(cart.taxPrice)
   ).toFixed(2);
-  const [paymentMethod, setPaymentMethod] = useState("PayPal");
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   const [firstName, setFirstName] = useState(shippingAddress.firstName);
   const [lastName, setLastname] = useState(shippingAddress.lastName);
@@ -202,6 +202,9 @@ const ShippingScreen = ({ history }) => {
         </Row>
         <Row>
           <Col md={12} style={{ marginTop: "30px" }}>
+            <Link to="/cart">
+              <Button>Go Back</Button>
+            </Link>
             <Button type="submit" variant="primary" onClick={submitHandler}>
               Continue
             </Button>
