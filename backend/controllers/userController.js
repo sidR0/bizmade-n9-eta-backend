@@ -20,8 +20,8 @@ const authUser = asyncHandler(async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(401);
-    throw new Error("Invalid email or password");
+    res.status(401).json({ message: "Invalid email or password" });
+    // throw new Error("Invalid email or password");
   }
 });
 
@@ -34,8 +34,8 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.status(400);
-    throw new Error("User already exists");
+    res.status(400).json({ message: "User already exists" });
+    // throw new Error("User already exists");
   }
 
   const user = await User.create({
@@ -54,8 +54,8 @@ const registerUser = asyncHandler(async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(400);
-    throw new Error("Invalid user data");
+    res.status(400).json({ message: "Invalid user data" });
+    // throw new Error("Invalid user data");
   }
 });
 
@@ -74,8 +74,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
       isManufacturer: user.isManufacturer,
     });
   } else {
-    res.status(404);
-    throw new Error("User not found");
+    res.status(404).json({ message: "User not found" });
+    // throw new Error("User not found");
   }
 });
 
@@ -103,8 +103,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       token: generateToken(updatedUser._id),
     });
   } else {
-    res.status(404);
-    throw new Error("User not found");
+    res.status(404).json({ message: "User not found" });
+    // throw new Error("User not found");
   }
 });
 
@@ -126,8 +126,8 @@ const deleteUser = asyncHandler(async (req, res) => {
     await user.remove();
     res.json({ message: "User removed" });
   } else {
-    res.status(404);
-    throw new Error("User not found");
+    res.status(404).json({ message: "User not found" });
+    // throw new Error("User not found");
   }
 });
 
@@ -140,8 +140,8 @@ const getUserById = asyncHandler(async (req, res) => {
   if (user) {
     res.json(user);
   } else {
-    res.status(404);
-    throw new Error("User not found");
+    res.status(404).json({ message: "User not found" });
+    // throw new Error("User not found");
   }
 });
 
@@ -165,8 +165,8 @@ const updateUser = asyncHandler(async (req, res) => {
       isManufacturer: updatedUser.isManufacturer,
     });
   } else {
-    res.status(404);
-    throw new Error("User not found");
+    res.status(404).json({ message: "User not found" });
+    // throw new Error("User not found");
   }
 });
 

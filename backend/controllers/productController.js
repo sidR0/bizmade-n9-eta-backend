@@ -34,8 +34,8 @@ const getProductById = asyncHandler(async (req, res) => {
   if (product) {
     res.json(product);
   } else {
-    res.status(404);
-    throw new Error("Product not found");
+    res.status(404).json({ message: "Product not found" });
+    // throw new Error("Product not found");
   }
 });
 
@@ -104,8 +104,8 @@ const updateProduct = asyncHandler(async (req, res) => {
     const updatedProduct = await product.save();
     res.json(updatedProduct);
   } else {
-    res.status(404);
-    throw new Error("Product not found");
+    res.status(404).json({ message: "Product not found" });
+    // throw new Error("Product not found");
   }
 });
 
@@ -119,8 +119,8 @@ const deleteProduct = asyncHandler(async (req, res) => {
     await product.remove();
     res.json({ message: "Product removed" });
   } else {
-    res.status(404);
-    throw new Error("Product not found");
+    res.status(404).json({ message: "Product not found" });
+    // throw new Error("Product not found");
   }
 });
 

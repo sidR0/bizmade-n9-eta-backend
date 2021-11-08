@@ -22,8 +22,8 @@ const addOrderItems = asyncHandler(async (req, res) => {
   } = req.body;
 
   if (orderItems && orderItems.length === 0) {
-    res.status(400);
-    throw new Error("No order items");
+    res.status(400).json({ message: "No order items" });
+    // throw new Error("No order items");
     return;
   } else {
     const order = new Order({
@@ -66,8 +66,8 @@ const getOrderById = asyncHandler(async (req, res) => {
   if (order) {
     res.json(order);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(404).json({ message: "Order not found" });
+    // throw new Error("Order not found");
   }
 });
 
@@ -90,8 +90,8 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 
     res.json(updatedOrder);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(404).json({ message: "Order not found" });
+    // throw new Error("Order not found");
   }
 });
 
@@ -108,8 +108,8 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 
     res.json(updatedOrder);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(404).json({ message: "Order not found" });
+    // throw new Error("Order not found");
   }
 });
 
@@ -121,13 +121,13 @@ const getManufacturerOrders = asyncHandler(async (req, res) => {
   if (order) {
     res.json(order);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(404).json({ message: "Order not found" });
+    // throw new Error("Order not found");
   }
 });
 
-// @desc    Get logged in user orders
-// @route   GET /api/orders/myorders
+// @desc    Get logged in dealer user orders
+// @route   GET /api/orders/myorders/:userid
 // @access  Private
 const getMyOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ user: req.params.id });
