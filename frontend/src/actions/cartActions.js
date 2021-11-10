@@ -14,6 +14,7 @@ import {
   CART_SAVE_SHIPPING_ADDRESS,
   CART_SAVE_PAYMENT_METHOD,
 } from "../constants/cartConstants";
+import { logout } from "./userActions";
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
   const { data } = await axios.get(`/api/products/${id}`);
@@ -31,6 +32,49 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
       maxQuantity: data.maxQuantity,
     },
   });
+
+  try {
+    console.log("cart is ");
+    console.log(JSON.stringify(id, qty));
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data2 } = await axios.post(
+      `/api/cart/product/${id}`,
+      {
+        user: userInfo._id,
+        product: data._id,
+        name: data.name,
+        qty: Number(qty),
+        price: Number(data.price),
+        countInStock: "1000",
+      },
+      config
+    );
+
+    dispatch({
+      type: CART_ADD_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+  }
 
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
