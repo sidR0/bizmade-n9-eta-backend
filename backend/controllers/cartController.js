@@ -7,7 +7,10 @@ import User from "../models/userModel.js";
 // @route GET /api/cart
 // @access Private/Admin
 const getCartItems = asyncHandler(async (req, res) => {
-  const cartItems = await Cart.find({});
+  console.log("req params");
+  console.log(req);
+  const cartItems = await Cart.find({ email: "keerthi23@example.com" });
+  //console.log(cartItems);
   res.json(cartItems);
 });
 

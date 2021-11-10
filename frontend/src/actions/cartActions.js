@@ -48,11 +48,21 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
       },
     };
 
+    const cartStuff = await axios.get("/api/cart", {
+      params: {
+        email: userInfo.email,
+      },
+    });
+
+    console.log("cart stuff");
+    console.log(cartStuff.data);
+
     const { data2 } = await axios.post(
       `/api/cart/product/${id}`,
       {
         user: userInfo._id,
         product: data._id,
+        email: userInfo.email,
         name: data.name,
         qty: Number(qty),
         price: Number(data.price),

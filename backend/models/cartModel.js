@@ -12,6 +12,10 @@ const cartSchema = mongoose.Schema(
       required: true,
       ref: "Product",
     },
+    email: {
+      type: String,
+      required: true,
+    },
     name: { type: String },
     qty: { type: Number },
     price: { type: Number },
