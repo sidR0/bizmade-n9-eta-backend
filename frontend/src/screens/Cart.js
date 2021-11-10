@@ -72,7 +72,7 @@ const Cart = ({ match, location, history }) => {
                         )
                       }
                     >
-                      {[
+                      {/* {[
                         ...Array(
                           item.maxQuantity - item.minQuantity + 1
                         ).keys(),
@@ -83,7 +83,7 @@ const Cart = ({ match, location, history }) => {
                         >
                           {x + item.minQuantity}
                         </option>
-                      ))}
+                      ))} */}
                     </Form.Control>
                   </Col>
                   <Col md={2}>
