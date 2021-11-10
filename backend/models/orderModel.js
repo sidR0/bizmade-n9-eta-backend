@@ -20,9 +20,17 @@ const orderSchema = mongoose.Schema(
         },
         status: {
           type: String,
-          enum: ["Paid", "Processing", "Shipped", "Delivered", "Not Paid"],
-          default: "Not Paid",
+          enum: [
+            "Paid",
+            "Processing",
+            "Shipped",
+            "Delivered",
+            "Not Paid",
+            "Order Placed",
+          ],
+          default: "Order Placed",
         },
+        manufacturer: { type: String, required: true },
       },
     ],
     shippingAddress: {

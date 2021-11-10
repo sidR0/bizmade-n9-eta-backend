@@ -103,16 +103,16 @@ const Checkout = ({ match, history }) => {
               <h3 style={{ textAlign: "left" }}>Shipping</h3>
               <p>{/* <strong>Name: </strong> {order.user.name} */}</p>
               <p style={{ textAlign: "left" }}>
-                <strong>Email: </strong>
+                <strong>Email : </strong>
                 {order.shippingAddress.email}
                 {/* <a href={`mailto:${order.user.email}`}>{order.user.email}</a> */}
               </p>
               <p style={{ textAlign: "left" }}>
-                <strong>Phone Number: </strong>
+                <strong>Phone Number : </strong>
                 {order.shippingAddress.phone}
               </p>
               <p style={{ textAlign: "left" }}>
-                <strong>Address:</strong>
+                <strong>Address : </strong>
                 {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
                 {order.shippingAddress.postalCode},{" "}
                 {order.shippingAddress.country}
@@ -129,7 +129,7 @@ const Checkout = ({ match, history }) => {
             <ListGroup.Item>
               <h2 style={{ textAlign: "left" }}>Payment Method</h2>
               <p style={{ textAlign: "left" }}>
-                <strong>Method: </strong>
+                <strong>Method : </strong>
                 {order.paymentMethod}
               </p>
               {/* {order.isPaid ? (

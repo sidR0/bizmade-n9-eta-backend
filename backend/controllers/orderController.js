@@ -115,7 +115,7 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 
 const getManufacturerOrders = asyncHandler(async (req, res) => {
   const order = await Order.find({
-    "orderIems.product": "617beac2ebca0edd2b2f7ede",
+    "orderItems.manufacturer": "Apple",
   });
   console.log(order);
   if (order) {
@@ -142,6 +142,40 @@ const getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({}).populate("user", "id name");
   res.json(orders);
 });
+
+// const updateOrderStatus = asyncHandler(async (req, res) => {
+//   const {
+//     name,
+//     price,
+//     description,
+//     image,
+//     manufacturer,
+//     category,
+//     countInStock,
+//     minQuantity,
+//     maxQuantity,
+//   } = req.body;
+
+//   const product = await Product.findById(req.params.id);
+
+//   if (product) {
+//     product.name = name;
+//     product.price = price;
+//     product.description = description;
+//     product.image = image;
+//     product.manufacturer = manufacturer;
+//     product.category = category;
+//     product.countInStock = countInStock;
+//     product.minQuantity = minQuantity;
+//     product.maxQuantity = maxQuantity;
+
+//     const updatedProduct = await product.save();
+//     res.json(updatedProduct);
+//   } else {
+//     res.status(404).json({ message: "Product not found" });
+//     // throw new Error("Product not found");
+//   }
+// });
 
 export {
   addOrderItems,
