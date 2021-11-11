@@ -7,22 +7,26 @@ const cartSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "Product",
-    },
     email: {
       type: String,
       required: true,
     },
-    name: { type: String },
-    qty: { type: Number },
-    minQuantity: { type: Number },
-    maxQuantity: { type: Number },
-    price: { type: Number },
-    countInStock: { type: Number },
-    manufacturer: { type: String },
+    cartItems: [
+      {
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: false,
+          ref: "Product",
+        },
+        name: { type: String },
+        qty: { type: Number },
+        minQuantity: { type: Number },
+        maxQuantity: { type: Number },
+        price: { type: Number },
+        countInStock: { type: Number },
+        manufacturer: { type: String },
+      },
+    ],
   },
   { timestamps: true }
 );
