@@ -35,6 +35,57 @@ export const addToWishlist = (id, qty) => async (dispatch, getState) => {
     "wishlistItems",
     JSON.stringify(getState().wishlist.wishlistItems)
   );
+
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const wishListStuff = await axios.get("/api/wishlist", {
+      params: {
+        email: userInfo.email,
+      },
+    });
+
+    console.log(wishListStuff);
+
+    console.log("wishList stuff");
+    console.log(wishListStuff.data);
+    const { data2 } = await axios.post(
+      `/api/wishlist/product/${id}`,
+      JSON.stringify({
+        user: userInfo._id,
+        email: userInfo.email,
+        wishListItems: [
+          {
+            name: data.name,
+            product: data,
+            price: Number(data.price),
+          },
+        ],
+      }),
+      config
+    );
+    dispatch({
+      type: "WISH_LIST_ADD_SUCCESS",
+      payload: data2,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+  }
 };
 
 export const removeFromWishlist = (id) => (dispatch, getState) => {
