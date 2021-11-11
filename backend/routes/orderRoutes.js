@@ -8,14 +8,16 @@ import {
   getMyOrders,
   getOrders,
   getManufacturerOrders,
+  updateOrderStatus,
 } from "../controllers/orderController.js";
 import { protect, manufacturer } from "../middleware/authMiddleware.js";
 
-router.route("/").post(addOrderItems);
+router.route("/").post(protect, addOrderItems);
 router.route("/myorders/:id").get(protect, getMyOrders);
-//router.route('/myorders').get(getManufacturerOrders)
+router.route("/myorders").get(getManufacturerOrders);
 router.route("/:id").get(getOrderById);
 router.route("/:id/pay").put(updateOrderToPaid);
 router.route("/:id/deliver").put(updateOrderToDelivered);
+router.route("/").put(updateOrderStatus);
 
 export default router;

@@ -73,27 +73,32 @@ const Register = ({ location, history }) => {
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-
-        <Button
-          style={{ float: "left", margin: "30px 0" }}
-          type="submit"
-          variant="primary"
-          onClick={() => {
-            setIsManufacturer(false);
-          }}
-        >
-          REGISTER AS DEALER
-        </Button>
-        <Button
-          style={{ float: "left", margin: "30px 5px" }}
-          type="submit"
-          variant="primary"
-          onClick={() => {
-            setIsManufacturer(true);
-          }}
-        >
-          REGISTER AS MANUFACTURER
-        </Button>
+        <Row>
+          <Col>
+            <Button
+              style={{ margin: "30px 0" }}
+              type="submit"
+              variant="primary"
+              onClick={() => {
+                setIsManufacturer(false);
+              }}
+            >
+              REGISTER AS DEALER
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              style={{ margin: "30px 0" }}
+              type="submit"
+              variant="primary"
+              onClick={() => {
+                setIsManufacturer(true);
+              }}
+            >
+              REGISTER AS MANUFACTURER
+            </Button>
+          </Col>
+        </Row>
       </Form>
 
       <Row className="py-3">

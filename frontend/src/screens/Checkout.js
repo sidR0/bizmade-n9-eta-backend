@@ -51,29 +51,29 @@ const Checkout = ({ match, history }) => {
   useEffect(() => {
     if (!userInfo) {
       history.push("/login");
-    }
-
-    const addPayPalScript = async () => {
-      const { data: clientId } = await axios.get("/api/config/paypal");
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-      script.async = true;
-      script.onload = () => {
-        setSdkReady(true);
+    } else {
+      const addPayPalScript = async () => {
+        const { data: clientId } = await axios.get("/api/config/paypal");
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+        script.async = true;
+        script.onload = () => {
+          setSdkReady(true);
+        };
+        document.body.appendChild(script);
       };
-      document.body.appendChild(script);
-    };
 
-    if (!order || successPay || successDeliver || order._id !== orderId) {
-      dispatch({ type: ORDER_PAY_RESET });
-      dispatch({ type: ORDER_DELIVER_RESET });
-      dispatch(getOrderDetails(orderId));
-    } else if (!order.isPaid) {
-      if (!window.paypal) {
-        addPayPalScript();
-      } else {
-        setSdkReady(true);
+      if (!order || successPay || successDeliver || order._id !== orderId) {
+        dispatch({ type: ORDER_PAY_RESET });
+        dispatch({ type: ORDER_DELIVER_RESET });
+        dispatch(getOrderDetails(orderId));
+      } else if (!order.isPaid) {
+        if (!window.paypal) {
+          addPayPalScript();
+        } else {
+          setSdkReady(true);
+        }
       }
     }
   }, [dispatch, orderId, successPay, successDeliver, order]);
@@ -103,16 +103,16 @@ const Checkout = ({ match, history }) => {
               <h3 style={{ textAlign: "left" }}>Shipping</h3>
               <p>{/* <strong>Name: </strong> {order.user.name} */}</p>
               <p style={{ textAlign: "left" }}>
-                <strong>Email: </strong>
+                <strong>Email : </strong>
                 {order.shippingAddress.email}
                 {/* <a href={`mailto:${order.user.email}`}>{order.user.email}</a> */}
               </p>
               <p style={{ textAlign: "left" }}>
-                <strong>Phone Number: </strong>
+                <strong>Phone Number : </strong>
                 {order.shippingAddress.phone}
               </p>
               <p style={{ textAlign: "left" }}>
-                <strong>Address:</strong>
+                <strong>Address : </strong>
                 {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
                 {order.shippingAddress.postalCode},{" "}
                 {order.shippingAddress.country}
@@ -129,7 +129,7 @@ const Checkout = ({ match, history }) => {
             <ListGroup.Item>
               <h2 style={{ textAlign: "left" }}>Payment Method</h2>
               <p style={{ textAlign: "left" }}>
-                <strong>Method: </strong>
+                <strong>Method : </strong>
                 {order.paymentMethod}
               </p>
               {/* {order.isPaid ? (

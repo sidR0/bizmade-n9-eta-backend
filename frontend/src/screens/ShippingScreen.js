@@ -35,7 +35,7 @@ const ShippingScreen = ({ history }) => {
     Number(cart.shippingPrice) +
     Number(cart.taxPrice)
   ).toFixed(2);
-  const [paymentMethod, setPaymentMethod] = useState("PayPal");
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   const [firstName, setFirstName] = useState(shippingAddress.firstName);
   const [lastName, setLastname] = useState(shippingAddress.lastName);
@@ -76,6 +76,11 @@ const ShippingScreen = ({ history }) => {
   //   );
   // };
 
+  const setPaymentHandler = (value) => {
+    // e.preventDefault();
+    dispatch(savePaymentMethod(value));
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
@@ -91,7 +96,7 @@ const ShippingScreen = ({ history }) => {
         email,
       })
     );
-    dispatch(savePaymentMethod(paymentMethod));
+    // dispatch(savePaymentMethod(paymentMethod));
     dispatch(
       createOrder({
         user: userInfo._id,
@@ -229,7 +234,7 @@ const ShippingScreen = ({ history }) => {
                         id="Razorpay"
                         name="paymentMethod"
                         value="Razorpay"
-                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        onChange={(e) => setPaymentHandler(e.target.value)}
                       ></Form.Check>
                       <Form.Check
                         type="radio"
@@ -237,7 +242,7 @@ const ShippingScreen = ({ history }) => {
                         id="PayPal"
                         name="paymentMethod"
                         value="PayPal"
-                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        onChange={(e) => setPaymentHandler(e.target.value)}
                       ></Form.Check>
                     </Col>
                   </Form.Group>
@@ -251,7 +256,12 @@ const ShippingScreen = ({ history }) => {
             <Link to="/cart">
               <Button>Go Back</Button>
             </Link>
-            <Button type="submit" variant="primary" onClick={submitHandler}>
+            <Button
+              type="submit"
+              variant="primary"
+              onClick={submitHandler}
+              disabled={!cart.shippingAddress && !cart.paymentMethod}
+            >
               Place Order
             </Button>
           </Col>

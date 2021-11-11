@@ -89,7 +89,7 @@ const OrderConfirmation = ({ match, history }) => {
             <Link to="/">
               <Button>Continue Shopping</Button>
             </Link>
-            <Link to="/dealer/orders">
+            <Link to={`/dealer/orders/${userInfo._id}`}>
               <Button type="submit" variant="primary">
                 My Orders
               </Button>

@@ -22,8 +22,8 @@ const addOrderItems = asyncHandler(async (req, res) => {
   } = req.body;
 
   if (orderItems && orderItems.length === 0) {
-    res.status(400);
-    throw new Error("No order items");
+    res.status(400).json({ message: "No order items" });
+    // throw new Error("No order items");
     return;
   } else {
     const order = new Order({
@@ -51,14 +51,14 @@ const addOrderItems = asyncHandler(async (req, res) => {
 // @route   GET /api/orders/:id
 // @access  Private
 const getOrderById = asyncHandler(async (req, res) => {
-  const user = await User.findOne({
-    email: req.body.email,
-    password: req.body.password,
-  });
+  // const user = await User.findOne({
+  //   email: req.body.email,
+  //   password: req.body.password,
+  // });
 
-  const { userId } = req.body;
+  // const { userId } = req.body;
 
-  const order = await Order.findById({ user: req.body.user }).populate(
+  const order = await Order.findById(req.params.id).populate(
     "user",
     "name email"
   );
@@ -66,8 +66,8 @@ const getOrderById = asyncHandler(async (req, res) => {
   if (order) {
     res.json(order);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(404).json({ message: "Order not found" });
+    // throw new Error("Order not found");
   }
 });
 
@@ -90,8 +90,8 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 
     res.json(updatedOrder);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(404).json({ message: "Order not found" });
+    // throw new Error("Order not found");
   }
 });
 
@@ -108,26 +108,27 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 
     res.json(updatedOrder);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(404).json({ message: "Order not found" });
+    // throw new Error("Order not found");
   }
 });
 
 const getManufacturerOrders = asyncHandler(async (req, res) => {
+  // const name = req.body.name;
+  // console.log(req.body);
   const order = await Order.find({
-    "orderIems.product": "617beac2ebca0edd2b2f7ede",
+    "orderItems.manufacturer": "Apple",
   });
-  console.log(order);
   if (order) {
     res.json(order);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(404).json({ message: "Order not found" });
+    // throw new Error("Order not found");
   }
 });
 
-// @desc    Get logged in user orders
-// @route   GET /api/orders/myorders
+// @desc    Get logged in dealer user orders
+// @route   GET /api/orders/myorders/:userid
 // @access  Private
 const getMyOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ user: req.params.id }).populate('product','name');
@@ -143,6 +144,32 @@ const getOrders = asyncHandler(async (req, res) => {
   res.json(orders);
 });
 
+const updateOrderStatus = asyncHandler(async (req, res) => {
+  const { id, status } = req.body;
+
+  const order = await Order.find({
+    "orderItems._id": "618c0141723c36c6d75942c9",
+  });
+  // const order = await Order.findById("618c0141723c36c6d75942c9");
+
+  // const product = await Product.findById(req.params.id);
+
+  if (order) {
+    order.orderItems.map((o) => {
+      if (o._id === "618c0141723c36c6d75942c9") {
+        o.status = "Delivered";
+      }
+    });
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+
+    // res.json(order);
+  } else {
+    res.status(404).json({ message: "Order not found" });
+    // throw new Error("Product not found");
+  }
+});
+
 export {
   addOrderItems,
   getOrderById,
@@ -151,4 +178,5 @@ export {
   getMyOrders,
   getOrders,
   getManufacturerOrders,
+  updateOrderStatus,
 };
