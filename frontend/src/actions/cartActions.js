@@ -62,22 +62,26 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
       `/api/cart/product/${id}`,
       {
         user: userInfo._id,
-        product: data._id,
         email: userInfo.email,
-        name: data.name,
-        qty: Number(qty),
-        minQuantity: data.minQuantity,
-        maxQuantity: data.maxQuantity,
-        price: Number(data.price),
-        countInStock: "1000",
-        manufacturer: data.manufacturer,
+        cartItems: [
+          {
+            product: data._id,
+            name: data.name,
+            qty: Number(qty),
+            minQuantity: data.minQuantity,
+            maxQuantity: data.maxQuantity,
+            price: Number(data.price),
+            countInStock: "1000",
+            manufacturer: data.manufacturer,
+          },
+        ],
       },
       config
     );
 
     dispatch({
       type: CART_ADD_SUCCESS,
-      payload: data,
+      payload: data2,
     });
   } catch (error) {
     const message =
