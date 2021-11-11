@@ -11,21 +11,14 @@ const DealerOrderHistory = ({ history, match }) => {
   const userId = match.params.id;
   const dispatch = useDispatch();
 
-  // const orderList = useSelector((state) => state.orderList);
-  // const { loading, error, orders } = orderList;
-  // console.log(orders);
-
   const orderListMy = useSelector((state) => state.orderListMy);
   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  //const myOrders = orders.map((o) => orders.userId === userInfo._id)
-
   useEffect(() => {
     if (userInfo) {
-      // const user = userInfo._id
       dispatch(listMyOrders(userId));
     } else {
       history.push("/login");
@@ -36,7 +29,6 @@ const DealerOrderHistory = ({ history, match }) => {
     <div>
       <>
         <h1>{userInfo.name}'s Orders</h1>
-        {/* <p>{userInfo._id}</p> */}
         {loadingOrders ? (
           <Loader />
         ) : errorOrders ? (

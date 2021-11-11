@@ -13,7 +13,7 @@ import { listProducts } from "../actions/productActions";
 import { listUsers } from "../actions/userActions";
 import Paginate from "../components/Paginate";
 
-function HomeScreen({ match }) {
+function HomeScreen({ match, history }) {
   // const [products, setProducts] = useState([]);
 
   // useEffect(() => {
@@ -29,10 +29,10 @@ function HomeScreen({ match }) {
   // const error = null
   const keyword = match.params.keyword;
   const pageNumber = match.params.pageNumber || 1;
+  const [items, setItems] = useState("");
   const dispatch = useDispatch();
 
-  const productList = useSelector((state) => {
-    // console.log(JSON.stringify(state));
+  const productList  = useSelector((state) => {
     return state.productList;
   });
 
@@ -41,24 +41,23 @@ function HomeScreen({ match }) {
 
   const { loading, error, products, page, pages } = productList;
 
-  var category = [];
-  products.map((p) => {
-    category.push(p.category);
-  });
-  const categories = [new Set(category)];
-  categories.slice(0);
-  console.log(categories);
-
   const userList = useSelector((state) => state.userList);
 
-  // useEffect(() => {
-  //   dispatch(listDataCreator('api/products', 'products')())
-  //   dispatch(listDataCreator('api/users', 'users')())
-  // }, [dispatch])
-
   useEffect(() => {
+   
     dispatch(listProducts(keyword, pageNumber));
+
   }, [dispatch, keyword, pageNumber]);
+  
+  const categoryHandler = (e) => {
+    const keyword = e.target.dataset.value;
+    e.preventDefault();
+    if (keyword.trim()) {
+      history.push(`/search/${keyword}`);
+    } else {
+      history.push("/");
+    }
+    }
 
   return (
     <>
@@ -100,19 +99,14 @@ function HomeScreen({ match }) {
                       <div className="products-list"></div>
                       <div className="filter">
                         <div className="header">Browse Categories</div>
-                        {categories.map((category) => {
-                          <input type="checkbox" value={category}>
-                            {category}
-                          </input>;
-                        })}
-
-                        <div className="all">All</div>
-                        <div className="clothes">Clothes</div>
-                        <div className="medicines">Medicines</div>
-                        <div className="grocery">Grocery</div>
-                        <div className="shoes">Shoes</div>
-                        <div className="phone">Phones</div>
-                        <div className="tyres">Tyres</div>
+                        <div className="all" name="fq" data-value="all" onClick={(e) => categoryHandler()}>All</div>
+                        <div className="clothes" name="fq"  data-value="Clothing" onClick={(e) => categoryHandler(e)}>Clothing</div>
+                        <div className="electronics" name="fq"  data-value="Electronics" onClick={(e) => categoryHandler(e)}>Electronics</div>
+                        <div className="healthcare" name="fq"  data-value="healthcare" onClick={(e) => categoryHandler(e)}>Healthcare</div> 
+                        <div className="home" name="fq"  data-value="home" onClick={(e) => categoryHandler(e)}>Home and Garden</div>
+                        <div className="automobile" name="fq"  data-value="automobile" onClick={(e) => categoryHandler(e)}>Automobile</div>
+                        <div className="entertainment" name="fq"  data-value="entertainment" onClick={(e) => categoryHandler(e)}>Entertainment</div>
+                        <div className="machinery" name="fq"  data-value="machinery" onClick={(e) => categoryHandler(e)}>Machinery</div>
                       </div>
                     </div>
                   </Col>

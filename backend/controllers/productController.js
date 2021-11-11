@@ -9,16 +9,32 @@ const getProducts = asyncHandler(async (req, res) => {
   const page = Number(req.query.pageNumber) || 1;
 
   const keyword = req.query.keyword
-    ? {
-        name: {
-          $regex: req.query.keyword,
-          $options: "i",
+    ?  {
+      $or: [
+        {
+          name: {
+            $regex: req.query.keyword,
+            $options: 'i',
+          },
         },
-      }
+        {
+          category: {
+            $regex: req.query.keyword,
+            $options: 'i',
+          },
+        },
+        {
+          manufacturer: {
+            $regex: req.query.keyword,
+            $options: 'i',
+          },
+        },
+      ],
+    }
     : {};
 
   const count = await Product.countDocuments({ ...keyword });
-  const products = await Product.find({ ...keyword })
+  const products = await Product.find({ ...keyword }).populate('category')
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
@@ -133,6 +149,12 @@ const getTopProducts = asyncHandler(async (req, res) => {
   res.json(products);
 });
 
+const getAllProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({});
+
+  res.json(products)
+})
+
 export {
   getProducts,
   getProductById,
@@ -140,4 +162,5 @@ export {
   updateProduct,
   deleteProduct,
   getTopProducts,
+  getAllProducts
 };

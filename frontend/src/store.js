@@ -6,13 +6,13 @@ import { createDataReducer } from "./reducers/combinedReducer.js";
 
 import {
   productCreateReducer,
-  productReviewCreateReducer,
   productTopRatedReducer,
   productUpdateReducer,
   productListReducer,
   productDetailsReducer,
   productDeleteReducer,
-} from "./reducers/productReducers";
+  productAllListReducer
+} from "./reducers/productReducers.js";
 
 import {
   userRegisterReducer,
@@ -22,7 +22,7 @@ import {
   userUpdateProfileReducer,
   userListReducer,
   userDeleteReducer,
-} from "./reducers/userReducers";
+} from "./reducers/userReducers.js";
 
 import {
   orderCreateReducer,
@@ -31,10 +31,10 @@ import {
   orderDetailsReducer,
   orderPayReducer,
   orderDeliverReducer,
-} from "./reducers/orderReducers";
+} from "./reducers/orderReducers.js";
 
-import { cartReducer } from "./reducers/cartReducers";
-import { wishlistReducer } from "./reducers/wishlistReducer";
+import { cartReducer } from "./reducers/cartReducers.js";
+import { wishlistReducer } from "./reducers/wishlistReducer.js";
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -43,6 +43,7 @@ const reducer = combineReducers({
   productUpdate: productUpdateReducer,
   productDelete: productDeleteReducer,
   productTopRated: productTopRatedReducer,
+  productAllList: productAllListReducer,
 
   cart: cartReducer,
   wishlist: wishlistReducer,
@@ -80,11 +81,8 @@ const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
 //     userList: createDataReducer('users')
 // });
 
-// const initialState = {};
-// const initialState = {
-//     products: [],
-//     users: []
-// };
+
+
 
 const initialState = {
   cart: {
@@ -92,6 +90,7 @@ const initialState = {
     shippingAddress: shippingAddressFromStorage,
   },
   userLogin: { userInfo: userInfoFromStorage },
+
 };
 
 const store = createStore(

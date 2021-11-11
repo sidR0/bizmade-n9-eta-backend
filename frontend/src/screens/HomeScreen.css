@@ -25,11 +25,12 @@
 
 .all,
 .clothes,
-.medicines,
-.grocery,
-.shoes,
-.phone,
-.tyres {
+.electronics,
+.healthcare,
+.home,
+.automobile,
+.entertainment,
+.machinery {
   background-color: #ffff;
   display: flex;
   flex-direction: column;
@@ -38,4 +39,6 @@
   width: 100%;
   letter-spacing: 1px;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  cursor:pointer;
 }
+

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
@@ -12,19 +13,25 @@ import {
 } from "react-bootstrap";
 import Heart from "./images/heart.png";
 import "../styles.css";
-import products from "../products";
 import { Link } from "react-router-dom";
+import Product from "../components/Product";
 import { addToWishlist } from "../actions/wishlistActions";
-import { listProductDetails } from "../actions/productActions";
+import { listProductDetails, listAllProducts } from "../actions/productActions";
 
 const ProductScreen = ({ match, history }) => {
+  const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
+  const productAllList = useSelector((state) => 
+      state.productAllList
+  );
+  const  { productslist }  = productAllList;
+  console.log(productslist);
+
   const [qty, setQty] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
-
-  const dispatch = useDispatch();
+  const [products, setProducts] = useState([]);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -32,18 +39,32 @@ const ProductScreen = ({ match, history }) => {
   const wishlistCreate = useSelector((state) => state.wishlistCreate);
   // const { wishlistItem } = wishlistCreate;
 
-  useEffect(() => {
+  useEffect(() => { 
     if (!product._id || product._id !== match.params.id) {
       dispatch(listProductDetails(match.params.id));
     } else {
       setQty(product.minQuantity);
       setTotalPrice((product.price + 0.18 * product.price).toFixed(0));
     }
+    const fetchedProducts = async () => {
+          const { data } = await axios.get("/api/products/all");
+          setProducts(data);
+        };
+    fetchedProducts();
+    dispatch(listAllProducts());
     // setQty(product.minQuantity);
     // setTotalPrice(product.price * product.minQuantity);
   }, [dispatch, match, product]);
 
-  const addToCartHandler = () => {
+
+  const category = [];
+  products.map((p) => {
+    if(p.category === product.category){
+      category.push(p);
+    }  
+  });
+
+  const addToCartHandler = ({hisory}) => {
     if (!userInfo) {
       history.push("/login");
     } else {
@@ -59,9 +80,9 @@ const ProductScreen = ({ match, history }) => {
       history.push(`/wishlist`);
     }
   };
-
+ 
   return (
-    <Container className="pt-5">
+    <Container className="pt-5 container">
       <Row>
         <Col md={6} className="py-md-50">
           <h3 className="blue align-left">{product.name}</h3>
@@ -115,18 +136,18 @@ const ProductScreen = ({ match, history }) => {
                 <th scope="row" className="grey">
                   Discount
                 </th>
-                <td colspan="2">0</td>
+                <td colSpan="2">0</td>
               </tr>
               <tr>
                 <th scope="row" className="grey">
                   Total Price
                 </th>
-                <td colspan="2" className="font-weight-bold">
+                <td colSpan="2" className="font-weight-bold">
                   {totalPrice}
                 </td>
               </tr>
               <tr className="table-border">
-                <td colspan="4">
+                <td colSpan="4">
                   <span className="grey font-weight-bold">Quantity :</span>
                   <button
                     className="m-2"
@@ -151,7 +172,7 @@ const ProductScreen = ({ match, history }) => {
               </tr>
 
               <tr>
-                <td colspan="4">
+                <td colSpan="4">
                   <button className="w-75 m-2" onClick={addToCartHandler}>
                     Add to Cart
                   </button>
@@ -181,59 +202,28 @@ const ProductScreen = ({ match, history }) => {
       </p>
       <Row className="p-1">
         <Col md={12}>
+      {category.map((product, index) => index<4 && (
+        
           <Card
             style={{ width: "15rem" }}
             className="float-right pt-4 m-2 shadow"
+            onClick={() =>  window.scrollTo(0, 0,"smooth")}
           >
-            <Card.Img variant="top" src="" />
+            <Link to={`/product/${product._id}`}>
+            <Card.Img variant="top" src={product.image} />
+            </Link>
             <Card.Body>
-              <Card.Title>iPhone 11</Card.Title>
+            <Link to={`/product/${product._id}`}>
+              <Card.Title>{product.name}</Card.Title>
+            </Link>
               <Card.Text>
-                <p>Seller - Ajay Kumar</p>
+                <p>{product.manufacturer}</p>
                 55,990
               </Card.Text>
             </Card.Body>
           </Card>
-          <Card
-            style={{ width: "15rem" }}
-            className="float-right pt-4 m-2 shadow"
-          >
-            <Card.Img variant="top" src="" />
-            <Card.Body>
-              <Card.Title>iPhone 11</Card.Title>
-              <Card.Text>
-                <p>Seller - Ajay Kumar</p>
-                55,990
-              </Card.Text>
-            </Card.Body>
-          </Card>
-          <Card
-            style={{ width: "15rem" }}
-            className="float-right pt-4 m-2 shadow"
-          >
-            <Card.Img variant="top" src="" />
-            <Card.Body>
-              <Card.Title>iPhone 11</Card.Title>
-              <Card.Text>
-                <p>Seller - Ajay Kumar</p>
-                55,990
-              </Card.Text>
-            </Card.Body>
-          </Card>
-          <Card
-            style={{ width: "15rem" }}
-            className="float-right pt-4 m-2 shadow"
-          >
-            <Card.Img variant="top" src="" />
-            <Card.Body>
-              <Card.Title>iPhone 11</Card.Title>
-              <Card.Text>
-                <p>Seller - Ajay Kumar</p>
-                55,990
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
+      ))};
+       </Col>
       </Row>
     </Container>
   );

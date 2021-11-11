@@ -8,8 +8,6 @@ import wishlistRoutes from "./routes/wishlistRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import path from 'path'
-import sharp from 'sharp'
-import fs from 'fs'
 
 dotenv.config();
 
