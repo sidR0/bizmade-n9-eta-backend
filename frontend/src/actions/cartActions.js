@@ -30,6 +30,7 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
       qty,
       minQuantity: data.minQuantity,
       maxQuantity: data.maxQuantity,
+      manufacturer: data.manufacturer,
     },
   });
 
@@ -65,8 +66,11 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
         email: userInfo.email,
         name: data.name,
         qty: Number(qty),
+        minQuantity: data.minQuantity,
+        maxQuantity: data.maxQuantity,
         price: Number(data.price),
         countInStock: "1000",
+        manufacturer: data.manufacturer,
       },
       config
     );

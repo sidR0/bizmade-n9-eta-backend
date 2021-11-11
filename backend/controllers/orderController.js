@@ -114,10 +114,11 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 });
 
 const getManufacturerOrders = asyncHandler(async (req, res) => {
+  // const name = req.body.name;
+  // console.log(req.body);
   const order = await Order.find({
     "orderItems.manufacturer": "Apple",
   });
-  console.log(order);
   if (order) {
     res.json(order);
   } else {
@@ -143,39 +144,32 @@ const getOrders = asyncHandler(async (req, res) => {
   res.json(orders);
 });
 
-// const updateOrderStatus = asyncHandler(async (req, res) => {
-//   const {
-//     name,
-//     price,
-//     description,
-//     image,
-//     manufacturer,
-//     category,
-//     countInStock,
-//     minQuantity,
-//     maxQuantity,
-//   } = req.body;
+const updateOrderStatus = asyncHandler(async (req, res) => {
+  const { id, status } = req.body;
 
-//   const product = await Product.findById(req.params.id);
+  // const order = await Order.find({
+  //   "orderItems._id": "618c0141723c36c6d75942c9",
+  // });
+  const order = await Order.findById("618c0141723c36c6d75942c9");
 
-//   if (product) {
-//     product.name = name;
-//     product.price = price;
-//     product.description = description;
-//     product.image = image;
-//     product.manufacturer = manufacturer;
-//     product.category = category;
-//     product.countInStock = countInStock;
-//     product.minQuantity = minQuantity;
-//     product.maxQuantity = maxQuantity;
+  // const product = await Product.findById(req.params.id);
 
-//     const updatedProduct = await product.save();
-//     res.json(updatedProduct);
-//   } else {
-//     res.status(404).json({ message: "Product not found" });
-//     // throw new Error("Product not found");
-//   }
-// });
+  if (order) {
+    //   order.orderItems.map((o) => {
+    //     if (o._id === "618c0141723c36c6d75942c9") {
+    //       o.status = status;
+    //     }
+    //   });
+    // order.isDelivered = true;
+    // const updatedOrder = await order.save();
+    // res.json(updatedOrder);
+
+    res.json(order);
+  } else {
+    res.status(404).json({ message: "Order not found" });
+    // throw new Error("Product not found");
+  }
+});
 
 export {
   addOrderItems,
@@ -185,4 +179,5 @@ export {
   getMyOrders,
   getOrders,
   getManufacturerOrders,
+  updateOrderStatus,
 };

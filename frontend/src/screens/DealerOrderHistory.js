@@ -30,7 +30,7 @@ const DealerOrderHistory = ({ history, match }) => {
   useEffect(() => {
     if (userInfo) {
       if (userInfo.isManufacturer) {
-        dispatch(listManufacturerOrders(userId));
+        dispatch(listManufacturerOrders(userInfo.name));
       } else {
         dispatch(listMyOrders(userId));
       }
@@ -139,7 +139,7 @@ const DealerOrderHistory = ({ history, match }) => {
                                     console.log(e.target.value);
                                     setStatus(e.target.value);
                                     o.status = status;
-                                    console.log(`Orders : ${order}`);
+                                    console.log(`Order ID : ${o._id}`);
                                   }}
                                 >
                                   <option value="Order Placed">

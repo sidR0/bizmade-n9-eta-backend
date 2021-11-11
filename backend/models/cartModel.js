@@ -18,8 +18,11 @@ const cartSchema = mongoose.Schema(
     },
     name: { type: String },
     qty: { type: Number },
+    minQuantity: { type: Number },
+    maxQuantity: { type: Number },
     price: { type: Number },
     countInStock: { type: Number },
+    manufacturer: { type: String },
   },
   { timestamps: true }
 );
