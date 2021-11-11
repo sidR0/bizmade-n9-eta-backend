@@ -9,9 +9,9 @@ import User from "../models/userModel.js";
 const getCartItems = asyncHandler(async (req, res) => {
   // console.log("req params");
   // console.log(req.query.email);
-  const cartItems = await Cart.find({ email: req.query.email });
+  const myCart = await Cart.find({ email: req.query.email });
   //console.log(cartItems);
-  res.json(cartItems);
+  res.json(myCart);
 });
 
 // @desc ADD cart item
