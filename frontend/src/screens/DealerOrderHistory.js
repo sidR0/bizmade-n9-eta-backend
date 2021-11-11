@@ -140,6 +140,7 @@ const DealerOrderHistory = ({ history, match }) => {
                                     setStatus(e.target.value);
                                     o.status = status;
                                     console.log(`Order ID : ${o._id}`);
+                                    // dispatch()
                                   }}
                                 >
                                   <option value="Order Placed">

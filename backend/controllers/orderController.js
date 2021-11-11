@@ -147,24 +147,23 @@ const getOrders = asyncHandler(async (req, res) => {
 const updateOrderStatus = asyncHandler(async (req, res) => {
   const { id, status } = req.body;
 
-  // const order = await Order.find({
-  //   "orderItems._id": "618c0141723c36c6d75942c9",
-  // });
-  const order = await Order.findById("618c0141723c36c6d75942c9");
+  const order = await Order.find({
+    "orderItems._id": "618c0141723c36c6d75942c9",
+  });
+  // const order = await Order.findById("618c0141723c36c6d75942c9");
 
   // const product = await Product.findById(req.params.id);
 
   if (order) {
-    //   order.orderItems.map((o) => {
-    //     if (o._id === "618c0141723c36c6d75942c9") {
-    //       o.status = status;
-    //     }
-    //   });
-    // order.isDelivered = true;
-    // const updatedOrder = await order.save();
-    // res.json(updatedOrder);
+    order.orderItems.map((o) => {
+      if (o._id === "618c0141723c36c6d75942c9") {
+        o.status = "Delivered";
+      }
+    });
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
 
-    res.json(order);
+    // res.json(order);
   } else {
     res.status(404).json({ message: "Order not found" });
     // throw new Error("Product not found");
