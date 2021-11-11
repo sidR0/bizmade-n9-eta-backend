@@ -52,14 +52,19 @@ const deleteCartItem = asyncHandler(async (req, res) => {
 
   const myCart = await Cart.find({ "cartItems._id": req.params.id });
 
-  // if (cartItemById) {
-  //   await cartItemById.remove();
-  //   res.json({ message: "Cart Item removed" });
-  // } else {
-  //   res.status(404);
-  //   throw new Error("Cart Item found");
-  // }
-  res.json(myCart);
+  const index = myCart[0].cartItems.findIndex(
+    (item) => item._id === req.params.id
+  );
+
+  if (index >= 0) {
+    myCart[0].cartItems.splice(index, 1);
+    res.json({ message: "Cart Item removed" });
+  } else {
+    res.status(404);
+    throw new Error("Cart Item not found");
+  }
+
+  console.log(index);
 });
 
 export { getCartItems, addToCart, deleteCartItem };
