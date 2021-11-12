@@ -9,36 +9,47 @@ const getProducts = asyncHandler(async (req, res) => {
   const page = Number(req.query.pageNumber) || 1;
 
   const keyword = req.query.keyword
-    ?  {
-      $or: [
-        {
-          name: {
-            $regex: req.query.keyword,
-            $options: 'i',
+    ? {
+        $or: [
+          {
+            name: {
+              $regex: req.query.keyword,
+              $options: "i",
+            },
           },
-        },
-        {
-          category: {
-            $regex: req.query.keyword,
-            $options: 'i',
+          {
+            category: {
+              $regex: req.query.keyword,
+              $options: "i",
+            },
           },
-        },
-        {
-          manufacturer: {
-            $regex: req.query.keyword,
-            $options: 'i',
+          {
+            manufacturer: {
+              $regex: req.query.keyword,
+              $options: "i",
+            },
           },
-        },
-      ],
-    }
+        ],
+      }
     : {};
 
   const count = await Product.countDocuments({ ...keyword });
-  const products = await Product.find({ ...keyword }).populate('category')
+  const products = await Product.find({ ...keyword })
+    .populate("category")
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
+});
+
+// @desc Fetch all products
+// @route GET /api/products/manufacturer/:manufacturer
+// @access Private
+const getManufacturerProducts = asyncHandler(async (req, res) => {
+  const manufacturer = req.params.id;
+  const products = await Product.find({ manufacturer });
+
+  res.json({ products });
 });
 
 // @desc Fetch product
@@ -152,8 +163,8 @@ const getTopProducts = asyncHandler(async (req, res) => {
 const getAllProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({});
 
-  res.json(products)
-})
+  res.json(products);
+});
 
 export {
   getProducts,
@@ -162,5 +173,6 @@ export {
   updateProduct,
   deleteProduct,
   getTopProducts,
-  getAllProducts
+  getAllProducts,
+  getManufacturerProducts,
 };

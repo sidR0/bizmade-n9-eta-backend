@@ -12,38 +12,27 @@ const getwishlistItems = asyncHandler(async (req, res) => {
 });
 
 // @desc ADD wishlist item
-// @route POST /api/wishlist/:id/products/:id
+// @route POST /api/wishlist/product/:id
 // @access Private/Admin
 const addToWishlist = asyncHandler(async (req, res) => {
-  //query for specified user
-  const user = await User.findOne({
-    email: req.body.email,
-    password: req.body.password,
-  });
-  console.log(req.params);
-  //query for all products except for what's on the list
-  /* let stuff = await Product.find(
-            {_id:{ $not: {$in:[...user.wishlist.items]}}
-        });
-
-    if(stuff = 0){
-        
-    }*/
-  const { userId } = req.body;
-  console.log(req.params.id);
-  const product = await Product.findById(req.params.id);
-  console.log(product);
+  const myWishList = await Wishlist.find({ email: req.body.email });
   console.log("body", req.body);
-  const data = req.params;
-  const wishlistItem = new Wishlist({
-    user: userId,
-    name: data.name,
-    product: data.id,
-    price: data.price,
-  });
 
-  const wishlistedProduct = await wishlistItem.save();
-  res.json(wishlistedProduct);
+  if (myWishList.length) {
+    const data = req.body;
+    // console.log("myCart.cartItems->");
+    // console.log(myCart[0].cartItems);
+
+    myWishList[0].wishListItems.push(req.body.wishListItems[0]);
+    const newWishList = await myWishList[0].save();
+    res.json(newWishList);
+  } else {
+    const data = req.body;
+    const wishlistItem = new Wishlist(data);
+
+    const wishlistedProduct = await wishlistItem.save();
+    res.json(wishlistedProduct);
+  }
 });
 
 // @desc    Delete a wishlist item

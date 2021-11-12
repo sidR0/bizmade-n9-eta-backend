@@ -5,16 +5,24 @@ const wishlistSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "User"
+      ref: "User",
     },
-    name: { type: String},
-    price: { type: Number },
-    product : {
-      type: mongoose.Schema.Types.ObjectId,
+    email: {
+      type: String,
       required: true,
-      ref: "Product",
-    }
     },
+    wishListItems: [
+      {
+        name: { type: String },
+        price: { type: Number },
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: "Product",
+        },
+      },
+    ],
+  },
   { timestamps: true }
 );
 

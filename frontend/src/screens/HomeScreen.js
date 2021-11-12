@@ -9,7 +9,10 @@ import ProductCarousel from "../components/ProductCarousel";
 import { useDispatch, useSelector } from "react-redux";
 import { listDataCreator } from "../actions/combinedActions.js";
 import ManufacLandingPage from "./ManufacLandingPage";
-import { listProducts } from "../actions/productActions";
+import {
+  listProducts,
+  listManufacturerProducts,
+} from "../actions/productActions";
 import { listUsers } from "../actions/userActions";
 import Paginate from "../components/Paginate";
 
@@ -32,7 +35,7 @@ function HomeScreen({ match, history }) {
   const [items, setItems] = useState("");
   const dispatch = useDispatch();
 
-  const productList  = useSelector((state) => {
+  const productList = useSelector((state) => {
     return state.productList;
   });
 
@@ -44,11 +47,13 @@ function HomeScreen({ match, history }) {
   const userList = useSelector((state) => state.userList);
 
   useEffect(() => {
-   
-    dispatch(listProducts(keyword, pageNumber));
-
+    if (userInfo && userInfo.isManufacturer) {
+      dispatch(listManufacturerProducts(userInfo.name));
+    } else {
+      dispatch(listProducts(keyword, pageNumber));
+    }
   }, [dispatch, keyword, pageNumber]);
-  
+
   const categoryHandler = (e) => {
     const keyword = e.target.dataset.value;
     e.preventDefault();
@@ -57,7 +62,7 @@ function HomeScreen({ match, history }) {
     } else {
       history.push("/");
     }
-    }
+  };
 
   return (
     <>
@@ -99,14 +104,70 @@ function HomeScreen({ match, history }) {
                       <div className="products-list"></div>
                       <div className="filter">
                         <div className="header">Browse Categories</div>
-                        <div className="all" name="fq" data-value="all" onClick={(e) => categoryHandler()}>All</div>
-                        <div className="clothes" name="fq"  data-value="Clothing" onClick={(e) => categoryHandler(e)}>Clothing</div>
-                        <div className="electronics" name="fq"  data-value="Electronics" onClick={(e) => categoryHandler(e)}>Electronics</div>
-                        <div className="healthcare" name="fq"  data-value="healthcare" onClick={(e) => categoryHandler(e)}>Healthcare</div> 
-                        <div className="home" name="fq"  data-value="home" onClick={(e) => categoryHandler(e)}>Home and Garden</div>
-                        <div className="automobile" name="fq"  data-value="automobile" onClick={(e) => categoryHandler(e)}>Automobile</div>
-                        <div className="entertainment" name="fq"  data-value="entertainment" onClick={(e) => categoryHandler(e)}>Entertainment</div>
-                        <div className="machinery" name="fq"  data-value="machinery" onClick={(e) => categoryHandler(e)}>Machinery</div>
+                        <div
+                          className="all"
+                          name="fq"
+                          data-value="all"
+                          onClick={(e) => categoryHandler()}
+                        >
+                          All
+                        </div>
+                        <div
+                          className="clothes"
+                          name="fq"
+                          data-value="Clothing"
+                          onClick={(e) => categoryHandler(e)}
+                        >
+                          Clothing
+                        </div>
+                        <div
+                          className="electronics"
+                          name="fq"
+                          data-value="Electronics"
+                          onClick={(e) => categoryHandler(e)}
+                        >
+                          Electronics
+                        </div>
+                        <div
+                          className="healthcare"
+                          name="fq"
+                          data-value="healthcare"
+                          onClick={(e) => categoryHandler(e)}
+                        >
+                          Healthcare
+                        </div>
+                        <div
+                          className="home"
+                          name="fq"
+                          data-value="home"
+                          onClick={(e) => categoryHandler(e)}
+                        >
+                          Home and Garden
+                        </div>
+                        <div
+                          className="automobile"
+                          name="fq"
+                          data-value="automobile"
+                          onClick={(e) => categoryHandler(e)}
+                        >
+                          Automobile
+                        </div>
+                        <div
+                          className="entertainment"
+                          name="fq"
+                          data-value="entertainment"
+                          onClick={(e) => categoryHandler(e)}
+                        >
+                          Entertainment
+                        </div>
+                        <div
+                          className="machinery"
+                          name="fq"
+                          data-value="machinery"
+                          onClick={(e) => categoryHandler(e)}
+                        >
+                          Machinery
+                        </div>
                       </div>
                     </div>
                   </Col>

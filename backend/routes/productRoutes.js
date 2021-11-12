@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
-import multer from 'multer';
-const upload = multer({dest: 'uploads/'})
+import multer from "multer";
+const upload = multer({ dest: "uploads/" });
 
 import {
   getProducts,
@@ -10,11 +10,13 @@ import {
   updateProduct,
   deleteProduct,
   getTopProducts,
-  getAllProducts
+  getAllProducts,
+  getManufacturerProducts,
 } from "../controllers/productController.js";
 import { protect, manufacturer } from "../middleware/authMiddleware.js";
 
 router.route("/").get(getProducts).post(protect, manufacturer, createProduct);
+router.get("/manufacturer/:id", protect, manufacturer, getManufacturerProducts);
 router.get("/top", getTopProducts);
 router.route("/all").get(getAllProducts);
 router

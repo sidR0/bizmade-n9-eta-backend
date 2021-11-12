@@ -7,50 +7,62 @@ import User from "../models/userModel.js";
 // @route GET /api/cart
 // @access Private/Admin
 const getCartItems = asyncHandler(async (req, res) => {
+  //console.log("endpoint hit");
   // console.log("req params");
   // console.log(req.query.email);
-  const cartItems = await Cart.find({ email: req.query.email });
-  //console.log(cartItems);
-  res.json(cartItems);
+  // console.log("endpoint hit");
+  const myCart = await Cart.find({ email: "keerthi23@example.com" });
+  console.log(myCart);
+  res.json(myCart);
 });
 
 // @desc ADD cart item
 // @route POST /api/cart/product/:id
 // @access Private/Admin
 const addToCart = asyncHandler(async (req, res) => {
-  //query for specified user
-  //query for all products except for what's on the list
-  /* let stuff = await Product.find(
-            {_id:{ $not: {$in:[...user.wishlist.items]}}
-        });
+  const myCart = await Cart.find({ email: req.body.email });
+  // console.log(req.body.email);
+  // console.log(myCart);
 
-    if(stuff = 0){
-        
-    }*/
-  const { userId } = req.body;
-  // console.log(req.params.id);
-  const product = await Product.findById(req.params.id);
-  // console.log(product);
-  // console.log("body", req.body);
-  const data = req.body;
-  const cartItem = new Cart(data);
+  if (myCart.length) {
+    const data = req.body;
+    // console.log("myCart.cartItems->");
+    // console.log(myCart[0].cartItems);
 
-  const cartAddedItem = await cartItem.save();
-  res.json(cartAddedItem);
+    myCart[0].cartItems.push(req.body.cartItems[0]);
+    const newCart = await myCart[0].save();
+    res.json(newCart);
+  } else {
+    const data = req.body;
+    const cartItem = new Cart(data);
+    // console.log("data", data);
+    // console.log("cartItem", cartItem);
+
+    const cartAddedItem = await cartItem.save();
+    res.json(cartAddedItem);
+  }
 });
 
 // @desc    Delete a cart item
 // @route   DELETE /api/cart/:id
 // @access  Private/Admin
 const deleteCartItem = asyncHandler(async (req, res) => {
-  const cartItemById = await Cart.findById(req.params.id);
+  console.log("delete end point hit");
+  console.log(req.url);
 
-  if (cartItemById) {
-    await cartItemById.remove();
+  const myCart = await Cart.find({ "cartItems._id": req.params.id });
+
+  const index = myCart[0].cartItems.findIndex(
+    (item) => (item._id = req.params.id)
+  );
+  console.log(index);
+  if (index != -1) {
+    myCart[0].cartItems.splice(index, 1);
+    const newCart = await myCart[0].save();
     res.json({ message: "Cart Item removed" });
   } else {
     res.status(404);
-    throw new Error("Cart Item found");
+    throw new Error("Cart Item not found");
   }
 });
 

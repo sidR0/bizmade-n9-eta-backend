@@ -50,20 +50,33 @@ export const listProducts =
     }
   };
 
-  export const listAllProducts = () => async (dispatch) => {
+export const listManufacturerProducts =
+  (manufacturer) => async (dispatch, getState) => {
     try {
-      dispatch({ type: PRODUCT_ALL_LIST_REQUEST });
+      dispatch({ type: PRODUCT_LIST_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
       const { data } = await axios.get(
-        `/api/products/all`
+        `/api/products/manufacturer/${manufacturer}`,
+        config
       );
       dispatch({
-        type: PRODUCT_ALL_LIST_SUCCESS,
+        type: PRODUCT_LIST_SUCCESS,
         payload: data,
       });
     } catch (error) {
       dispatch({
-        type: PRODUCT_ALL_LIST_FAIL,
+        type: PRODUCT_LIST_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
@@ -72,6 +85,25 @@ export const listProducts =
     }
   };
 
+export const listAllProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_ALL_LIST_REQUEST });
+
+    const { data } = await axios.get(`/api/products/all`);
+    dispatch({
+      type: PRODUCT_ALL_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_ALL_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 
 export const listProductDetails = (id) => async (dispatch) => {
   try {

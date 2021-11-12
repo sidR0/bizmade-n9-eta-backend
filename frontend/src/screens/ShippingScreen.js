@@ -107,6 +107,7 @@ const ShippingScreen = ({ history }) => {
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
+        isPaid: false,
       })
     );
     // history.push("/placeorder");
